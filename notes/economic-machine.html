@@ -1,0 +1,1219 @@
+<title>The Economic Machine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@500&family=Kalam:wght@400;700&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.js"></script>
+<style>
+/* Layout: whiteboard study notebook. Sticky section rail on the left, one reading column, hand-drawn figures break slightly wider. */
+:root{
+  --paper:#f6f7f9; --sheet:#ffffff; --ink:#1d1f27; --muted:#5a5f70; --rule:#dde0e8;
+  --accent:#6741d9; --accent-soft:#ece6ff; --ok:#2f9e44; --ok-soft:#e3f6e6; --bad:#e03131; --bad-soft:#ffe8e8;
+  --c-ink:#1e1e1e; --c-gray:#868e96; --c-blue:#1971c2; --c-red:#e03131; --c-green:#2f9e44; --c-orange:#e8590c; --c-violet:#6741d9; --c-yellow:#f08c00;
+  --f-blue:#d0ebff; --f-red:#ffe3e3; --f-green:#d3f9d8; --f-orange:#ffe8cc; --f-violet:#e5dbff; --f-yellow:#fff3bf; --f-gray:#f1f3f5;
+  --display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --hand:"Kalam", "Comic Sans MS", "Bradley Hand", cursive;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#15161b; --sheet:#1c1d24; --ink:#e7e8ee; --muted:#a2a6b5; --rule:#30323d;
+  --accent:#b197fc; --accent-soft:#2c2547; --ok:#69db7c; --ok-soft:#1d3423; --bad:#ff8787; --bad-soft:#3d2023;
+  --c-ink:#e9ecef; --c-gray:#909296; --c-blue:#74c0fc; --c-red:#ff8787; --c-green:#8ce99a; --c-orange:#ffa94d; --c-violet:#b197fc; --c-yellow:#ffd43b;
+  --f-blue:#1b3550; --f-red:#4a2226; --f-green:#1d3b25; --f-orange:#4a321d; --f-violet:#2f2752; --f-yellow:#433b1c; --f-gray:#26272e;
+  color-scheme:dark }}
+:root[data-theme="dark"]{
+  --paper:#15161b; --sheet:#1c1d24; --ink:#e7e8ee; --muted:#a2a6b5; --rule:#30323d;
+  --accent:#b197fc; --accent-soft:#2c2547; --ok:#69db7c; --ok-soft:#1d3423; --bad:#ff8787; --bad-soft:#3d2023;
+  --c-ink:#e9ecef; --c-gray:#909296; --c-blue:#74c0fc; --c-red:#ff8787; --c-green:#8ce99a; --c-orange:#ffa94d; --c-violet:#b197fc; --c-yellow:#ffd43b;
+  --f-blue:#1b3550; --f-red:#4a2226; --f-green:#1d3b25; --f-orange:#4a321d; --f-violet:#2f2752; --f-yellow:#433b1c; --f-gray:#26272e;
+  color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--paper); color:var(--ink); font:17px/1.6 var(--body); margin:0}
+a{color:var(--accent)}
+.page{display:grid; grid-template-columns:230px minmax(0,1fr); gap:40px; max-width:1160px; margin:0 auto; padding-inline:24px; padding-block:32px 80px}
+nav.rail{position:sticky; top:calc(env(safe-area-inset-top,0px) + 20px); align-self:start; font-size:14px}
+nav.rail h2{font:700 12px/1 var(--body); letter-spacing:.09em; text-transform:uppercase; color:var(--muted); margin:0 0 12px}
+nav.rail ol{list-style:none; margin:0; padding:0; display:grid; gap:2px}
+nav.rail a{display:flex; justify-content:space-between; align-items:center; gap:8px; padding:6px 10px; border-radius:8px; color:var(--ink); text-decoration:none}
+nav.rail a:hover, nav.rail a:focus-visible{background:var(--accent-soft)}
+.chip{font:500 11px/1 var(--mono); padding:4px 6px; border-radius:6px; background:var(--f-gray); color:var(--muted); white-space:nowrap; font-variant-numeric:tabular-nums}
+.chip.done{background:var(--ok-soft); color:var(--ok)}
+.progress{margin-top:16px; padding:12px; border:1px solid var(--rule); border-radius:10px; background:var(--sheet); font-size:13px; color:var(--muted)}
+.progress b{font:500 20px var(--mono); color:var(--ink); display:block}
+main{min-width:0; max-width:780px}
+header.hero{display:grid; gap:12px; padding-bottom:24px; border-bottom:2px dashed var(--rule)}
+.eyebrow{font:700 12px/1.2 var(--body); letter-spacing:.09em; text-transform:uppercase; color:var(--accent)}
+h1{font:800 clamp(38px,6vw,64px)/1 var(--display); letter-spacing:-.02em; margin:0; text-wrap:balance}
+h1 span{font-family:var(--hand); font-weight:700; color:var(--accent); letter-spacing:0}
+.lede{font-size:19px; color:var(--muted); margin:0; max-width:62ch}
+.legend{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 0; padding:0; list-style:none; font-size:14px}
+.legend li{display:flex; gap:6px; align-items:center}
+section.sec{padding-block:44px 8px; border-bottom:2px dashed var(--rule)}
+h2.st{font:700 clamp(26px,3.6vw,34px)/1.15 var(--display); margin:6px 0 12px; text-wrap:balance}
+h3{font:700 19px/1.3 var(--display); margin:28px 0 8px}
+.key{font-family:var(--hand); font-size:22px; line-height:1.35; color:var(--accent); margin:0 0 16px; max-width:62ch}
+p, li{max-width:66ch}
+.sec ul, .sec ol.steps{padding-left:22px}
+.sec li{margin-block:4px}
+.terms{display:grid; gap:6px; margin:18px 0; padding:14px 16px; border:1.5px solid var(--rule); border-radius:12px; background:var(--sheet); font-size:15.5px}
+.terms dt{font-weight:700; display:inline}
+.terms dd{display:inline; margin:0; color:var(--muted)}
+.terms div{max-width:66ch}
+.watch{font-size:14px}
+figure.dg{margin:24px -12px; padding:12px; border-radius:14px; background:var(--sheet); border:1.5px solid var(--rule)}
+.dg .scroll{overflow-x:auto}
+.dg svg{display:block; width:100%; height:auto; min-width:520px}
+.dg .bar{display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:space-between; margin-top:8px}
+.dg figcaption{font-size:14.5px; color:var(--muted); flex:1 1 260px; min-width:0}
+.dg .btns{display:flex; gap:6px}
+button{font:inherit; cursor:pointer}
+.btn{font:700 13px/1 var(--body); padding:8px 11px; border-radius:8px; border:1.5px solid var(--rule); background:var(--paper); color:var(--ink)}
+.btn:hover{border-color:var(--accent)}
+.btn:focus-visible, .opt:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
+.btn.primary{background:var(--accent); border-color:var(--accent); color:var(--sheet)}
+.dg textarea{width:100%; height:120px; margin-top:8px; font:12px var(--mono); background:var(--paper); color:var(--ink); border:1px solid var(--rule); border-radius:8px}
+.toast{position:fixed; left:50%; bottom:calc(env(safe-area-inset-bottom,0px) + 20px); transform:translateX(-50%); background:var(--ink); color:var(--paper); padding:10px 16px; border-radius:10px; font-size:14px; max-width:calc(100% - 32px); z-index:5}
+table.cmp{border-collapse:collapse; width:100%; font-size:15px; min-width:520px}
+.tbl{overflow-x:auto; margin:16px 0}
+table.cmp th, table.cmp td{border-bottom:1px solid var(--rule); padding:8px 10px; text-align:left; vertical-align:top}
+table.cmp th{font:700 13px var(--body); letter-spacing:.04em; text-transform:uppercase; color:var(--muted)}
+.formula{font:500 15px var(--mono); background:var(--f-yellow); padding:2px 6px; border-radius:6px}
+
+/* calculator */
+.calc{display:grid; gap:10px; margin:20px 0; padding:16px; border-radius:14px; background:var(--sheet); border:1.5px solid var(--rule)}
+.calc .ctrls{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px}
+.calc label{display:grid; gap:2px; font-size:14px; color:var(--muted)}
+.calc label b{font:500 16px var(--mono); color:var(--ink)}
+.calc input[type=range]{width:100%; accent-color:var(--accent)}
+.calc .out{font-family:var(--hand); font-size:20px; line-height:1.35}
+
+/* quiz */
+.quiz{margin:28px 0 16px; padding:18px; border-radius:16px; background:var(--accent-soft)}
+.quiz > h3{margin:0 0 4px}
+.quiz .qs{display:grid; gap:18px; margin-top:14px}
+.q{background:var(--sheet); border-radius:12px; padding:14px 16px; border:1.5px solid var(--rule)}
+.q .meta{display:flex; gap:8px; align-items:center; font-size:12px; color:var(--muted); margin-bottom:4px}
+.lvl{font:700 11px/1 var(--body); letter-spacing:.06em; text-transform:uppercase; padding:4px 7px; border-radius:6px}
+.lvl.Basic{background:var(--f-blue); color:var(--c-blue)}
+.lvl.Deep{background:var(--f-orange); color:var(--c-orange)}
+.lvl.Interplay{background:var(--f-violet); color:var(--c-violet)}
+.lvl.Scenario{background:var(--f-green); color:var(--c-green)}
+.q .stem{font-weight:700; margin:4px 0 10px}
+.opts{display:grid; gap:8px; list-style:none; padding:0; margin:0}
+.opt{width:100%; text-align:left; padding:10px 12px; border-radius:10px; border:1.5px solid var(--rule); background:var(--paper); color:var(--ink); font-size:16px; line-height:1.45; display:grid; gap:4px}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default}
+.opt.ok{border-color:var(--ok); background:var(--ok-soft)}
+.opt.bad{border-color:var(--bad); background:var(--bad-soft)}
+.opt .why{font-size:14.5px; color:var(--muted)}
+.opt.ok .why, .opt.bad .why{color:var(--ink)}
+.verdict{margin-top:10px; font-weight:700}
+.verdict.ok{color:var(--ok)} .verdict.bad{color:var(--bad)}
+.qfoot{display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-top:14px; font-size:14px}
+.summary{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin:16px 0}
+.summary div{background:var(--sheet); border:1.5px solid var(--rule); border-radius:12px; padding:12px}
+.summary b{display:block; font:500 24px var(--mono)}
+footer{padding-block:32px; color:var(--muted); font-size:14px}
+
+@media (max-width: 900px){
+  .page{grid-template-columns:minmax(0,1fr); gap:16px; padding-inline:16px}
+  nav.rail{position:sticky; top:env(safe-area-inset-top,0px); z-index:3; background:var(--paper); padding-block:8px; border-bottom:1px solid var(--rule); margin-inline:-16px; padding-inline:16px}
+  nav.rail h2, .progress{display:none}
+  nav.rail ol{display:flex; overflow-x:auto; gap:4px}
+  nav.rail a{white-space:nowrap; background:var(--sheet); border:1px solid var(--rule)}
+  figure.dg{margin-inline:0}
+}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important; animation:none!important} }
+</style>
+
+<div class="page">
+<nav class="rail" aria-label="Sections">
+  <h2>Sections</h2>
+  <ol id="toc"></ol>
+  <div class="progress" aria-live="polite">Correct answers<b id="tot">0 / 0</b><span id="totsub">0 answered</span></div>
+</nav>
+
+<main>
+<header class="hero">
+  <div class="eyebrow">Study notes · Ray Dalio · 2013 · 31 min</div>
+  <h1>The Economic <span>Machine</span></h1>
+  <p class="lede">These notes follow the video <a href="https://www.youtube.com/watch?v=PHe0bXAIuk0" target="_blank" rel="noopener">“How The Economic Machine Works”</a> section by section. Each section has short notes, hand-drawn diagrams, and a quiz. Press <b>Animate</b> to replay a diagram. Press <b>Copy for Excalidraw</b>, open excalidraw.com, and paste to edit the diagram.</p>
+  <ul class="legend" aria-label="Question types">
+    <li><span class="lvl Basic">Basic</span> facts from the video</li>
+    <li><span class="lvl Deep">Deep</span> why it works</li>
+    <li><span class="lvl Interplay">Interplay</span> how the parts act on each other</li>
+    <li><span class="lvl Scenario">Scenario</span> apply it to new numbers</li>
+  </ul>
+</header>
+
+<!-- 1 -->
+<section class="sec" id="map" data-title="The three forces">
+  <div class="eyebrow">Section 1 · 0:00 – 1:13</div>
+  <h2 class="st">The map: three forces</h2>
+  <p class="key">Three forces move every economy. Each force works on a different time scale.</p>
+  <p>Dalio says the economy works like a simple machine. It has a few simple parts. It has a very large number of simple transactions that repeat again and again. Human nature drives these transactions.</p>
+  <p>The transactions create three forces:</p>
+  <ol class="steps">
+    <li><b>Productivity growth.</b> The slow, steady trend line.</li>
+    <li><b>The short-term debt cycle.</b> A wave of about 5 to 8 years.</li>
+    <li><b>The long-term debt cycle.</b> A wave of about 75 to 100 years.</li>
+  </ol>
+  <p>Put the three forces on top of each other. The result is a template. The template shows where the economy was, where it is now, and where it probably goes next.</p>
+  <figure class="dg" data-d="forces"><figcaption>Green is the trend. Orange is the long wave around the trend. Blue adds the short waves on top of the long wave. The economy you live in is the blue line.</figcaption></figure>
+  <p class="watch"><a href="https://www.youtube.com/watch?v=PHe0bXAIuk0&t=0s" target="_blank" rel="noopener">Watch 0:00</a></p>
+  <div class="quiz" data-s="map"></div>
+</section>
+
+<!-- 2 -->
+<section class="sec" id="tx" data-title="Transactions">
+  <div class="eyebrow">Section 2 · 1:13 – 3:29</div>
+  <h2 class="st">Transactions: the building block</h2>
+  <p class="key">An economy is the sum of its transactions. Total spending drives the economy.</p>
+  <p>In each transaction, a buyer gives money or credit to a seller. The seller gives goods, services, or financial assets in return.</p>
+  <ul>
+    <li>Credit spends like money. So <span class="formula">total spending = money + credit</span>.</li>
+    <li>Divide total spending by the quantity sold. The result is the price: <span class="formula">price = spending ÷ quantity</span>.</li>
+    <li>A <b>market</b> is all the buyers and all the sellers of one thing: wheat, cars, stocks.</li>
+    <li>An <b>economy</b> is all the transactions in all its markets.</li>
+  </ul>
+  <figure class="dg" data-d="transaction"><figcaption>Every cycle in the video starts here. If you know total spending and total quantity, you know price.</figcaption></figure>
+  <h3>The biggest buyer and seller: the government</h3>
+  <p>The government has two parts. Keep them separate. The difference becomes very important later.</p>
+  <ul>
+    <li>The <b>central government</b> collects taxes and spends money.</li>
+    <li>The <b>central bank</b> controls the amount of money and credit. It sets interest rates and it prints new money.</li>
+  </ul>
+  <figure class="dg" data-d="government"><figcaption>Only the central bank can print money. Only the central government can collect taxes and spend on goods and services.</figcaption></figure>
+  <p class="watch"><a href="https://www.youtube.com/watch?v=PHe0bXAIuk0&t=73s" target="_blank" rel="noopener">Watch 1:13</a></p>
+  <div class="quiz" data-s="tx"></div>
+</section>
+
+<!-- 3 -->
+<section class="sec" id="credit" data-title="Credit">
+  <div class="eyebrow">Section 3 · 3:29 – 6:21</div>
+  <h2 class="st">Credit: the biggest and most volatile part</h2>
+  <p class="key">Credit appears from a promise. One person's spending is another person's income. Together these two facts make growth feed on itself.</p>
+  <p>Lenders want to make their money into more money. Borrowers want to buy something now that they cannot pay for now, such as a house, a car, or a new business.</p>
+  <ul>
+    <li>The borrower promises to repay the <b>principal</b> plus <b>interest</b>.</li>
+    <li>High interest rates mean less borrowing. Low interest rates mean more borrowing.</li>
+    <li>When a borrower promises and a lender believes, credit exists. Any two people can create it.</li>
+    <li>At once, credit becomes <b>debt</b>. The debt is an asset to the lender and a liability to the borrower.</li>
+    <li>When the borrower repays, the asset and the liability disappear.</li>
+  </ul>
+  <figure class="dg" data-d="creditlife"><figcaption>Credit and debt are the same thing, seen from two sides and at two moments.</figcaption></figure>
+  <h3>Why credit matters so much</h3>
+  <p>Credit lets a borrower spend more. Every dollar you spend, someone else earns. So more spending means more income for someone else. Lenders lend more to people with more income. That person spends more, and the pattern continues.</p>
+  <figure class="dg" data-d="loop"><figcaption>Follow the dot. Each step raises the next one. This loop makes growth, and it also makes cycles.</figcaption></figure>
+  <p>A lender checks two things before lending. Together they make a borrower <b>creditworthy</b>.</p>
+  <figure class="dg" data-d="worthy"><figcaption>High income alone is not enough. Income must be large compared with debt.</figcaption></figure>
+  <dl class="terms">
+    <div><dt>Principal:</dt> <dd>the amount borrowed.</dd></div>
+    <div><dt>Interest:</dt> <dd>the extra amount the borrower pays for the loan.</dd></div>
+    <div><dt>Collateral:</dt> <dd>assets the lender can sell if the borrower cannot repay.</dd></div>
+    <div><dt>Creditworthy:</dt> <dd>able to repay (income large compared with debt) and has collateral.</dd></div>
+  </dl>
+  <p class="watch"><a href="https://www.youtube.com/watch?v=PHe0bXAIuk0&t=209s" target="_blank" rel="noopener">Watch 3:29</a></p>
+  <div class="quiz" data-s="credit"></div>
+</section>
+
+<!-- 4 -->
+<section class="sec" id="cycles" data-title="Why borrowing makes cycles">
+  <div class="eyebrow">Section 4 · 6:21 – 10:20</div>
+  <h2 class="st">Why borrowing makes cycles</h2>
+  <p class="key">Productivity matters most in the long run. Credit matters most in the short run.</p>
+  <p>People who invent and work hard raise their productivity. Over time, productivity raises living standards. But productivity grows slowly and steadily. It does not cause the big swings.</p>
+  <p>Debt causes the swings. When you borrow, you can consume more than you produce. When you repay, you must consume less than you produce.</p>
+  <h3>Borrowing is borrowing from your future self</h3>
+  <p>To buy something you cannot pay for now, you spend more than you earn. Later you must spend less than you earn to repay. That is a cycle. Every time you borrow, you create a cycle. This is true for one person and for a whole economy.</p>
+  <figure class="dg" data-d="future"><figcaption>The grey line is income. The blue line is spending. The area above income is the loan. The area below income is the repayment.</figcaption></figure>
+  <p>Imagine an economy with no credit. Then the only way to spend more is to earn more, and the only way to earn more is to produce more. Growth follows the productivity line, with no debt cycles.</p>
+  <h3>Money and credit are different</h3>
+  <p>Money settles a transaction. Pay cash for a beer and the deal ends at once. Put the beer on a bar tab and you create credit. The bartender holds an asset and you hold a liability until you pay.</p>
+  <figure class="dg" data-d="bartab"><figcaption>Credit is a promise that waits for payment. Money ends the deal.</figcaption></figure>
+  <p>Most of what people call money is credit. In the US at the time of the video, credit was about $50 trillion and money was about $3 trillion.</p>
+  <figure class="dg" data-d="moneybars"><figcaption>The bars are to scale. Credit is about 16 times larger than money.</figcaption></figure>
+  <p class="watch"><a href="https://www.youtube.com/watch?v=PHe0bXAIuk0&t=381s" target="_blank" rel="noopener">Watch 6:21</a></p>
+  <div class="quiz" data-s="cycles"></div>
+</section>
+
+<!-- 5 -->
+<section class="sec" id="growth" data-title="Good credit, bad credit">
+  <div class="eyebrow">Section 5 · 10:20 – 11:56</div>
+  <h2 class="st">Good credit, bad credit, and growth</h2>
+  <p class="key">Credit is good when it produces the income to repay it. Credit is bad when it finances consumption that cannot be repaid.</p>
+  <p>With credit, an economy spends more. Incomes can rise faster than productivity in the short run. They cannot do this in the long run.</p>
+  <figure class="dg" data-d="tvtractor"><figcaption>Both loans raise the seller's income today. Only the tractor helps you repay tomorrow.</figcaption></figure>
+  <h3>Follow the transactions</h3>
+  <p>You earn $100,000 and have no debt. You borrow $10,000 and spend $110,000. Your spending is the next person's income. That person borrows 10% of $110,000 and spends $121,000. The pattern feeds on itself.</p>
+  <figure class="dg" data-d="chain"><figcaption>Each person's spending becomes the next person's income. Borrowing amplifies every step. The same chain runs in reverse when borrowing falls.</figcaption></figure>
+  <p>But borrowing creates cycles. If the cycle goes up, it must come down at some point.</p>
+  <p class="watch"><a href="https://www.youtube.com/watch?v=PHe0bXAIuk0&t=620s" target="_blank" rel="noopener">Watch 10:20</a></p>
+  <div class="quiz" data-s="growth"></div>
+</section>
+
+<!-- 6 -->
+<section class="sec" id="short" data-title="Short-term debt cycle">
+  <div class="eyebrow">Section 6 · 11:56 – 14:16</div>
+  <h2 class="st">The short-term debt cycle</h2>
+  <p class="key">The central bank steers this cycle with interest rates. It lasts about 5 to 8 years.</p>
+  <ol class="steps">
+    <li><b>Expansion.</b> Credit is easy to get. Spending rises.</li>
+    <li><b>Inflation.</b> Spending and incomes grow faster than the production of goods. Prices rise.</li>
+    <li><b>The central bank raises interest rates.</b> Fewer people can afford new loans. Payments on existing debt rise.</li>
+    <li><b>Spending slows.</b> Because one person's spending is another person's income, incomes fall.</li>
+    <li><b>Recession.</b> Prices fall. Economists call falling prices <b>deflation</b>.</li>
+    <li><b>The central bank lowers interest rates</b> when the recession is too severe and inflation is no longer a problem. Borrowing and spending increase. A new expansion starts.</li>
+  </ol>
+  <figure class="dg" data-d="wheel"><figcaption>The dot moves through one full short-term cycle. The violet boxes are the two moves the central bank makes.</figcaption></figure>
+  <p>In this cycle, the only limit on spending is the willingness of lenders to lend and borrowers to borrow. Easy credit means expansion. Hard credit means recession.</p>
+  <h3>Each cycle ends a little higher, with more debt</h3>
+  <p>People prefer to borrow and spend more rather than repay debt. This is human nature. So each top and each bottom of the short cycle has more growth and more debt than the one before.</p>
+  <figure class="dg" data-d="stwave"><figcaption>The tops rise from cycle to cycle. The debt bars also rise. This build-up is the start of the long-term debt cycle.</figcaption></figure>
+  <dl class="terms">
+    <div><dt>Inflation:</dt> <dd>prices rise in general.</dd></div>
+    <div><dt>Deflation:</dt> <dd>prices fall in general.</dd></div>
+    <div><dt>Recession:</dt> <dd>economic activity decreases. In this cycle, lower interest rates can end it.</dd></div>
+  </dl>
+  <p class="watch"><a href="https://www.youtube.com/watch?v=PHe0bXAIuk0&t=716s" target="_blank" rel="noopener">Watch 11:56</a></p>
+  <div class="quiz" data-s="short"></div>
+</section>
+
+<!-- 7 -->
+<section class="sec" id="long" data-title="Long-term debt cycle">
+  <div class="eyebrow">Section 7 · 14:16 – 16:48</div>
+  <h2 class="st">The long-term debt cycle</h2>
+  <p class="key">Over decades, debts rise faster than incomes. Rising incomes and asset prices hide the risk until the debt burden is too big.</p>
+  <p>People become more indebted, but lenders lend even more freely. Everyone looks at what happened recently. Incomes rise. Asset prices rise. The stock market rises. It is a boom. Buying goods and assets with borrowed money pays. When many people do this, the result is a <b>bubble</b>.</p>
+  <p>Dalio calls the ratio of debt to income the <b>debt burden</b>: <span class="formula">debt burden = debt ÷ income</span>. While incomes keep rising, the burden stays manageable. Rising asset prices also keep borrowers creditworthy for a long time.</p>
+  <figure class="dg" data-d="longdebt"><figcaption>Red debt climbs faster than blue income. The gap between them is the debt burden. At the peak, the cycle reverses.</figcaption></figure>
+  <h3>The long-term debt peak</h3>
+  <p>Over decades, debt payments grow. At some point they grow faster than incomes. People must reduce spending. Incomes fall. People become less creditworthy, so borrowing falls. Debt payments still rise, so spending drops further. The cycle reverses.</p>
+  <ul>
+    <li>United States and Europe: 2008</li>
+    <li>Japan: 1989</li>
+    <li>United States: 1929</li>
+  </ul>
+  <dl class="terms">
+    <div><dt>Debt burden:</dt> <dd>debt divided by income.</dd></div>
+    <div><dt>Bubble:</dt> <dd>many people buy assets with borrowed money because prices keep rising.</dd></div>
+  </dl>
+  <p class="watch"><a href="https://www.youtube.com/watch?v=PHe0bXAIuk0&t=856s" target="_blank" rel="noopener">Watch 14:16</a></p>
+  <div class="quiz" data-s="long"></div>
+</section>
+
+<!-- 8 -->
+<section class="sec" id="delev" data-title="Deleveraging">
+  <div class="eyebrow">Section 8 · 16:48 – 19:09</div>
+  <h2 class="st">Deleveraging: the cycle in reverse</h2>
+  <p class="key">A deleveraging looks like a recession. But interest rates are already near 0%, so cutting them cannot help.</p>
+  <p>In a deleveraging, people reduce spending. Incomes fall. Credit disappears. Asset prices drop. Banks are under pressure. The stock market crashes. Social tension rises. Each event makes the next one worse.</p>
+  <p>Borrowers cannot borrow enough to make their debt payments. They must sell assets. The rush to sell pushes prices down. Collateral loses value, so borrowers become even less creditworthy. People feel poor.</p>
+  <figure class="dg" data-d="spiral"><figcaption>This is the growth loop from Section 3, running backwards. Every “more” became a “less”.</figcaption></figure>
+  <div class="tbl"><table class="cmp">
+    <thead><tr><th></th><th>Recession</th><th>Deleveraging</th></tr></thead>
+    <tbody>
+      <tr><td>Which cycle</td><td>Short-term</td><td>Long-term</td></tr>
+      <tr><td>Interest rates</td><td>Room to cut</td><td>Already near 0%</td></tr>
+      <tr><td>Does a rate cut work?</td><td>Yes. Borrowing restarts.</td><td>No. Rates cannot go lower.</td></tr>
+      <tr><td>Debt burden</td><td>Manageable</td><td>Too big to repay in full</td></tr>
+      <tr><td>Lenders and borrowers</td><td>Lend and borrow again after a cut</td><td>Lenders stop lending. Borrowers stop borrowing.</td></tr>
+      <tr><td>Examples in the video</td><td>The normal 5 to 8 year dip</td><td>US 1930s, US 2008</td></tr>
+    </tbody>
+  </table></div>
+  <p>Think of the whole economy as one person who is no longer creditworthy. Lenders see that the debts are too large to repay in full. Borrowers feel crippled by debt and do not want more.</p>
+  <dl class="terms"><div><dt>Deleveraging:</dt> <dd>the period when debt burdens must come down after a long-term debt peak.</dd></div></dl>
+  <p class="watch"><a href="https://www.youtube.com/watch?v=PHe0bXAIuk0&t=1008s" target="_blank" rel="noopener">Watch 16:48</a></p>
+  <div class="quiz" data-s="delev"></div>
+</section>
+
+<!-- 9 -->
+<section class="sec" id="four" data-title="Four ways out">
+  <div class="eyebrow">Section 9 · 19:09 – 26:14</div>
+  <h2 class="st">Four ways to reduce the debt burden</h2>
+  <p class="key">Three ways push prices down. One way pushes prices up. Every modern deleveraging used all four.</p>
+  <h3>1. Cut spending (austerity)</h3>
+  <p>People, businesses, banks, and governments reduce spending to repay debt. You expect the debt burden to fall. It rises. Spending cuts lower other people's incomes. Incomes fall faster than debts are repaid. Businesses cut costs, so unemployment rises. This way is deflationary and painful.</p>
+  <h3>2. Reduce debt (defaults and restructuring)</h3>
+  <p>Many borrowers cannot repay. A borrower's debt is a lender's asset. People fear that banks cannot repay them, so they withdraw their money. Banks lose money. People, businesses, and banks default. This severe contraction is a <b>depression</b>. People find that much of their wealth was never really there.</p>
+  <p>Many lenders prefer to <b>restructure</b>. They accept less money, or a longer time, or a lower interest rate. A little of something is better than all of nothing. But income and asset values fall faster than debt does. This way is also deflationary and painful.</p>
+  <h3>3. Redistribute wealth</h3>
+  <p>The government collects less tax because incomes and jobs fall. It must spend more on the unemployed and on stimulus. Its deficit grows. To pay, it raises taxes on the wealthy, who hold most of the wealth. The “have-nots” resent the “haves”. The “haves” resent the “have-nots”. Tension can rise inside countries and between debtor and creditor countries. In the 1930s, this led to extreme political change, including Hitler's rise to power.</p>
+  <h3>4. Print money</h3>
+  <p>Most of what people thought was money was credit. When credit disappears, people do not have enough money. With rates near 0%, the central bank must print money. Unlike the first three ways, printing is inflationary and stimulative. The US Federal Reserve printed over $2 trillion after 2008.</p>
+  <figure class="dg" data-d="levers"><figcaption>Watch the beam. The three deflationary ways tip it down to the left. Printing money brings it back to balance.</figcaption></figure>
+  <h3>Why the central bank and the government must work together</h3>
+  <p>The central bank can print money. But it can buy only financial assets. That helps only people who own financial assets. The central government can buy goods and services and give money to people. But it cannot print money. So the two must cooperate.</p>
+  <figure class="dg" data-d="coop"><figcaption>The central bank lends to the government by buying its bonds. The government spends. Incomes rise. Government debt rises, but the economy's total debt burden falls.</figcaption></figure>
+  <dl class="terms">
+    <div><dt>Austerity:</dt> <dd>cutting spending to repay debt.</dd></div>
+    <div><dt>Default:</dt> <dd>a borrower does not repay.</dd></div>
+    <div><dt>Restructuring:</dt> <dd>lender and borrower change the contract so the debt shrinks.</dd></div>
+    <div><dt>Depression:</dt> <dd>a severe economic contraction with widespread defaults.</dd></div>
+  </dl>
+  <p class="watch"><a href="https://www.youtube.com/watch?v=PHe0bXAIuk0&t=1149s" target="_blank" rel="noopener">Watch 19:09</a></p>
+  <div class="quiz" data-s="four"></div>
+</section>
+
+<!-- 10 -->
+<section class="sec" id="beauty" data-title="Beautiful deleveraging">
+  <div class="eyebrow">Section 10 · 26:14 – 29:37</div>
+  <h2 class="st">The “beautiful” deleveraging</h2>
+  <p class="key">Balance the deflationary ways with the inflationary way. Get income growth above the interest rate on the debt.</p>
+  <p>A deleveraging can be ugly or it can be beautiful. In a beautiful deleveraging:</p>
+  <ul>
+    <li>debts fall compared with income,</li>
+    <li>real economic growth is positive,</li>
+    <li>inflation is not a problem.</li>
+  </ul>
+  <p><b>Does printing money cause inflation?</b> Not if it replaces credit that disappeared. Spending is what matters. A dollar of spending paid with money has the same effect on price as a dollar paid with credit.</p>
+  <h3>The key test: income growth against the interest rate</h3>
+  <p>Dalio's example: debt equals one year of national income (100%). The interest rate on the debt is 2%. Debt grows 2% a year from interest alone. If income grows only 1%, the burden never falls. The central bank must print enough to push income growth above the interest rate.</p>
+  <div class="calc" id="calc">
+    <div class="ctrls">
+      <label for="calc-d0">Starting debt burden <b id="v-d0">100%</b><input id="calc-d0" type="range" min="50" max="300" step="10" value="100"></label>
+      <label for="calc-r">Interest rate on the debt <b id="v-r">2.0%</b><input id="calc-r" type="range" min="0" max="8" step="0.5" value="2"></label>
+      <label for="calc-g">Income growth per year <b id="v-g">1.0%</b><input id="calc-g" type="range" min="-4" max="10" step="0.5" value="1"></label>
+    </div>
+    <div class="scroll" style="overflow-x:auto"><svg id="calc-svg" role="img" aria-label="Debt burden over 15 years" style="display:block;width:100%;height:auto;min-width:480px"></svg></div>
+    <div class="out" id="calc-out" aria-live="polite"></div>
+    <div style="font-size:13px;color:var(--muted)">This model is simple. Debt grows only by interest. Income grows at a constant rate. This matches the example in the video.</div>
+  </div>
+  <p>Printing is easy to abuse because people prefer it to the other ways. Too much printing causes very high inflation, as in Germany in the 1920s.</p>
+  <h3>Recovery: reflation</h3>
+  <figure class="dg" data-d="reflation"><figcaption>The growth loop starts again. It usually takes a decade or more, so people call it a “lost decade”.</figcaption></figure>
+  <dl class="terms"><div><dt>Reflation:</dt> <dd>the phase after a deleveraging when lending, spending, and growth return.</dd></div></dl>
+  <p class="watch"><a href="https://www.youtube.com/watch?v=PHe0bXAIuk0&t=1574s" target="_blank" rel="noopener">Watch 26:14</a></p>
+  <div class="quiz" data-s="beauty"></div>
+</section>
+
+<!-- 11 -->
+<section class="sec" id="rules" data-title="Three rules">
+  <div class="eyebrow">Section 11 · 29:37 – 31:00</div>
+  <h2 class="st">Three rules of thumb</h2>
+  <p class="key">Keep debt growth below income growth, and income growth below productivity growth. Then raise productivity.</p>
+  <ol class="steps">
+    <li><b>Do not let debt rise faster than income.</b> Debt burdens will crush you at some point.</li>
+    <li><b>Do not let income rise faster than productivity.</b> You will become uncompetitive.</li>
+    <li><b>Do all you can to raise productivity.</b> In the long run, it matters most.</li>
+  </ol>
+  <figure class="dg" data-d="rules"><figcaption>Read it as one chain of “less than or equal to”. Each rule protects the one to its left.</figcaption></figure>
+  <p>The template is simple: put the short cycle on the long cycle, and put both on the productivity line. Dalio says this applies to one person and to policy makers.</p>
+  <p class="watch"><a href="https://www.youtube.com/watch?v=PHe0bXAIuk0&t=1777s" target="_blank" rel="noopener">Watch 29:37</a></p>
+  <div class="quiz" data-s="rules"></div>
+</section>
+
+<!-- final -->
+<section class="sec" id="final" data-title="Connect everything">
+  <div class="eyebrow">Final check</div>
+  <h2 class="st">Connect everything</h2>
+  <p class="key">These questions mix sections. They test how the parts act on each other.</p>
+  <div class="quiz" data-s="final"></div>
+  <h3>Your results by question type</h3>
+  <div class="summary" id="summary"></div>
+  <button class="btn" id="reset-all" type="button">Clear all answers</button>
+</section>
+
+<footer>Notes are a summary of the video in plain English. Figures (such as $50 trillion of credit) are the video's 2013 numbers. Diagrams: hand-drawn style with rough.js. Paste into Excalidraw to edit.</footer>
+</main>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+"use strict";
+const NS = "http://www.w3.org/2000/svg";
+const REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
+// Excalidraw palette (light) used for export
+const EX_STROKE = {ink:"#1e1e1e", gray:"#868e96", blue:"#1971c2", red:"#e03131", green:"#2f9e44", orange:"#e8590c", violet:"#6741d9", yellow:"#f08c00"};
+const EX_FILL = {blue:"#a5d8ff", red:"#ffc9c9", green:"#b2f2bb", orange:"#ffd8a8", violet:"#d0bfff", yellow:"#ffec99", gray:"#e9ecef"};
+
+/* ---------- diagram helpers ---------- */
+function sample(n, fn){ const p=[]; for(let i=0;i<=n;i++){ p.push(fn(i/n)); } return p; }
+function ring(n, cx, cy, rx, ry, labels, opts){
+  // nodes placed on an ellipse, with curved arrows on an inner ring
+  const els=[]; const step=360/n;
+  labels.forEach((lab,i)=>{
+    const a=(-90+step*i)*Math.PI/180;
+    const x=cx+rx*Math.cos(a), y=cy+ry*Math.sin(a);
+    els.push({k:"rect", x:x-opts.w/2, y:y-opts.h/2, w:opts.w, h:opts.h, c:lab[1], f:lab[1], label:lab[0], fs:opts.fs||16, step:i+1});
+    const a0=(-90+step*i+step*0.28)*Math.PI/180, a1=(-90+step*(i+1)-step*0.28)*Math.PI/180;
+    const pts=sample(6,t=>{ const aa=a0+(a1-a0)*t; return [cx+opts.ir*Math.cos(aa), cy+opts.ir*0.95*Math.sin(aa)]; });
+    els.push({k:"arrow", pts, curve:true, c:opts.ac||"ink", step:i+1});
+  });
+  const path=sample(48,t=>{ const aa=(-90+360*t)*Math.PI/180; return [cx+opts.ir*Math.cos(aa), cy+opts.ir*0.95*Math.sin(aa)]; });
+  els.push({k:"dot", pts:path, c:opts.dc||"red", dur:opts.dur||9});
+  return els;
+}
+
+/* ---------- diagram specs ---------- */
+const D = {};
+D.forces = (()=>{
+  const X=t=>60+700*t, T=t=>300-150*t;
+  const lo=t=> t<0.8 ? -70*Math.sin(Math.PI*t/0.8) : 45*Math.sin(Math.PI*(t-0.8)/0.2);
+  return {w:800,h:370,auto:true,els:[
+    {k:"arrow",pts:[[60,340],[775,340]],c:"gray"},{k:"arrow",pts:[[60,340],[60,25]],c:"gray"},
+    {k:"text",x:770,y:358,text:"time",fs:15,c:"gray",anchor:"end"},
+    {k:"text",x:72,y:28,text:"economic activity",fs:15,c:"gray",anchor:"start"},
+    {k:"line",pts:sample(30,t=>[X(t),T(t)]),curve:true,c:"green",sw:2.6,step:1},
+    {k:"text",x:680,y:136,text:"1. productivity growth",fs:17,c:"green",step:1},
+    {k:"line",pts:sample(80,t=>[X(t),T(t)+lo(t)]),curve:true,c:"orange",sw:2.4,step:2},
+    {k:"text",x:330,y:118,text:"2. long-term debt cycle (75–100 yrs)",fs:17,c:"orange",step:2},
+    {k:"line",pts:sample(240,t=>[X(t),T(t)+lo(t)-14*Math.sin(2*Math.PI*t*8)]),curve:true,c:"blue",sw:1.8,step:3},
+    {k:"text",x:80,y:318,text:"3. short-term debt cycles (5–8 yrs)",fs:17,c:"blue",anchor:"start",step:3},
+    {k:"text",x:690,y:262,text:"deleveraging",fs:16,c:"red",step:3}
+  ]};
+})();
+D.transaction = {w:800,h:320,els:[
+  {k:"rect",x:60,y:50,w:200,h:100,c:"blue",f:"blue",label:"Buyer",fs:22},
+  {k:"rect",x:540,y:50,w:200,h:100,c:"green",f:"green",label:"Seller",fs:22},
+  {k:"arrow",pts:[[262,80],[536,80]],c:"blue",step:1},{k:"text",x:400,y:62,text:"money + credit",c:"blue",step:1},
+  {k:"arrow",pts:[[536,122],[262,122]],c:"green",step:2},{k:"text",x:400,y:152,text:"goods, services,\nfinancial assets",c:"green",fs:16,step:2},
+  {k:"rect",x:50,y:215,w:330,h:80,c:"yellow",f:"yellow",label:"Total spending\n= money + credit",step:3},
+  {k:"rect",x:420,y:215,w:330,h:80,c:"violet",f:"violet",label:"Price\n= total spending ÷ quantity",step:4}
+]};
+D.government = {w:800,h:330,els:[
+  {k:"rect",x:290,y:20,w:220,h:60,c:"ink",f:"gray",label:"Government",fs:20},
+  {k:"arrow",pts:[[340,82],[200,138]],step:1},{k:"arrow",pts:[[460,82],[600,138]],step:2},
+  {k:"rect",x:40,y:140,w:320,h:110,c:"orange",f:"orange",label:"Central government\ncollects taxes\nspends money",step:1},
+  {k:"rect",x:440,y:140,w:320,h:110,c:"violet",f:"violet",label:"Central bank\nsets interest rates\nprints new money",step:2},
+  {k:"arrow",pts:[[600,252],[600,290]],c:"violet",step:3},
+  {k:"text",x:600,y:308,text:"controls the amount of money and credit",c:"violet",fs:16,step:3},
+  {k:"text",x:200,y:280,text:"cannot print money",c:"orange",fs:16,step:3}
+]};
+D.creditlife = {w:860,h:240,els:[
+  {k:"rect",x:20,y:30,w:240,h:130,c:"blue",f:"blue",label:"1. Promise\nborrower: “I will repay”\nlender believes it",fs:16,step:1},
+  {k:"arrow",pts:[[264,95],[306,95]],step:2},
+  {k:"rect",x:310,y:30,w:240,h:130,c:"yellow",f:"yellow",label:"2. Credit = debt\nlender: asset\nborrower: liability",fs:16,step:2},
+  {k:"arrow",pts:[[554,95],[596,95]],step:3},
+  {k:"rect",x:600,y:30,w:240,h:130,c:"green",f:"green",label:"3. Repay\nprincipal + interest\nasset and liability end",fs:16,step:3},
+  {k:"text",x:430,y:205,text:"“Out of thin air”: only a promise and belief are needed.",c:"gray",fs:16,step:3}
+]};
+D.loop = {w:700,h:470,auto:true,els:[
+  {k:"rect",x:250,y:30,w:200,h:72,c:"green",f:"green",label:"More spending",step:1},
+  {k:"arrow",pts:[[455,80],[545,185]],curve:false,step:2},
+  {k:"rect",x:460,y:190,w:220,h:78,c:"blue",f:"blue",label:"More income\n(for the seller)",step:2},
+  {k:"arrow",pts:[[545,272],[455,362]],step:3},
+  {k:"rect",x:240,y:365,w:220,h:78,c:"violet",f:"violet",label:"More creditworthy\n(lenders lend more)",step:3},
+  {k:"arrow",pts:[[236,362],[150,272]],step:4},
+  {k:"rect",x:30,y:190,w:200,h:78,c:"orange",f:"orange",label:"More borrowing",step:4},
+  {k:"arrow",pts:[[150,186],[245,82]],step:5},
+  {k:"text",x:355,y:232,text:"one person's spending\nis another person's income",c:"violet",fs:18,step:5},
+  {k:"dot",pts:[[350,66],[570,229],[350,404],[130,229],[350,66]],c:"green",dur:6}
+]};
+D.worthy = {w:700,h:300,els:[
+  {k:"rect",x:140,y:20,w:420,h:62,c:"green",f:"green",label:"Creditworthy borrower",fs:20,step:2},
+  {k:"line",pts:[[255,120],[255,84]],step:2},{k:"line",pts:[[445,120],[445,84]],step:2},
+  {k:"rect",x:150,y:120,w:210,h:150,c:"blue",f:"blue",label:"Ability to repay\nincome is large\ncompared with debt",fs:16,step:1},
+  {k:"rect",x:345,y:120,w:210,h:150,c:"orange",f:"orange",label:"Collateral\nassets the lender\ncan sell",fs:16,step:1}
+]};
+D.future = {w:800,h:330,els:[
+  {k:"arrow",pts:[[60,300],[775,300]],c:"gray"},{k:"text",x:770,y:318,text:"time",fs:15,c:"gray",anchor:"end"},
+  {k:"line",pts:[[60,180],[760,180]],c:"gray",dash:true},{k:"text",x:765,y:170,text:"income",c:"gray",fs:15,anchor:"end"},
+  {k:"rect",x:62,y:132,w:236,h:46,c:"none",f:"green",fill2:"hachure",step:1},
+  {k:"rect",x:302,y:182,w:296,h:46,c:"none",f:"red",fill2:"hachure",step:2},
+  {k:"line",pts:[[60,130],[300,130],[300,230],[600,230],[600,180],[760,180]],c:"blue",sw:2.6,step:1},
+  {k:"text",x:180,y:104,text:"borrow: spend more than you earn",c:"green",fs:16,step:1},
+  {k:"text",x:450,y:258,text:"repay: spend less than you earn",c:"red",fs:16,step:2},
+  {k:"text",x:680,y:150,text:"cycle complete",c:"blue",fs:16,step:3}
+]};
+D.bartab = {w:800,h:250,els:[
+  {k:"rect",x:20,y:15,w:300,h:220,c:"gray",rough:0.6},{k:"text",x:170,y:40,text:"Pay cash (money)",fs:19},
+  {k:"rect",x:50,y:65,w:240,h:60,c:"green",f:"green",label:"beer ⇄ cash",step:1},
+  {k:"arrow",pts:[[170,128],[170,158]],step:1},
+  {k:"rect",x:50,y:162,w:240,h:56,c:"green",f:"green",label:"settled now",step:1},
+  {k:"rect",x:345,y:15,w:435,h:220,c:"gray",rough:0.6},{k:"text",x:562,y:40,text:"Put it on a tab (credit)",fs:19},
+  {k:"rect",x:365,y:65,w:180,h:66,c:"yellow",f:"yellow",label:"beer now\npromise to pay",fs:16,step:2},
+  {k:"arrow",pts:[[548,98],[588,98]],step:3},
+  {k:"rect",x:592,y:65,w:170,h:66,c:"orange",f:"orange",label:"bartender: asset\nyou: liability",fs:16,step:3},
+  {k:"arrow",pts:[[677,134],[677,160]],step:4},
+  {k:"rect",x:592,y:162,w:170,h:58,c:"green",f:"green",label:"pay later:\nboth disappear",fs:16,step:4}
+]};
+D.moneybars = {w:700,h:310,els:[
+  {k:"line",pts:[[80,260],[620,260]],c:"gray"},
+  {k:"rect",x:160,y:40,w:150,h:220,c:"orange",f:"orange",fill2:"hachure",step:1},
+  {k:"text",x:235,y:150,text:"≈ $50\ntrillion",fs:22,step:1},
+  {k:"text",x:235,y:282,text:"credit",c:"orange",fs:18,step:1},
+  {k:"rect",x:400,y:247,w:150,h:13,c:"green",f:"green",step:2},
+  {k:"text",x:475,y:225,text:"≈ $3 trillion",fs:20,step:2},
+  {k:"text",x:475,y:282,text:"money",c:"green",fs:18,step:2},
+  {k:"text",x:350,y:302,text:"United States, figures from the video (2013)",c:"gray",fs:14}
+]};
+D.tvtractor = {w:800,h:310,els:[
+  {k:"rect",x:50,y:15,w:310,h:62,c:"red",f:"red",label:"Borrow for a big TV",step:1},
+  {k:"arrow",pts:[[205,80],[205,112]],step:1},
+  {k:"rect",x:50,y:115,w:310,h:62,c:"gray",f:"gray",label:"No new income",step:2},
+  {k:"arrow",pts:[[205,180],[205,212]],step:2},
+  {k:"rect",x:50,y:215,w:310,h:80,c:"red",f:"red",label:"Repay from old income\n= bad credit",step:3},
+  {k:"rect",x:440,y:15,w:310,h:62,c:"green",f:"green",label:"Borrow for a tractor",step:1},
+  {k:"arrow",pts:[[595,80],[595,112]],step:1},
+  {k:"rect",x:440,y:115,w:310,h:62,c:"blue",f:"blue",label:"Bigger harvest, more income",step:2},
+  {k:"arrow",pts:[[595,180],[595,212]],step:2},
+  {k:"rect",x:440,y:215,w:310,h:80,c:"green",f:"green",label:"Repay and live better\n= good credit",step:3}
+]};
+D.chain = (()=>{
+  const ppl=[["Person A","$100,000","$10,000","$110,000"],["Person B","$110,000","$11,000","$121,000"],["Person C","$121,000","$12,100","$133,100"]];
+  const els=[]; ppl.forEach((p,i)=>{
+    const x=20+i*300;
+    els.push({k:"rect",x,y:40,w:250,h:170,c:["blue","violet","green"][i],f:["blue","violet","green"][i],label:`${p[0]}\nearns ${p[1]}\nborrows ${p[2]}\nspends ${p[3]}`,fs:17,step:i*2+1});
+    if(i<2){ els.push({k:"arrow",pts:[[x+254,125],[x+296,125]],c:"red",step:i*2+2}); els.push({k:"text",x:x+275,y:100,text:"income",c:"red",fs:14,step:i*2+2}); }
+  });
+  els.push({k:"text",x:445,y:240,text:"each person borrows 10% of income",c:"gray",fs:15});
+  return {w:900,h:255,auto:true,gap:650,els};
+})();
+D.wheel = {w:720,h:500,auto:true,els:[
+  ...ring(6,360,250,190,182,[
+    ["Expansion\ncredit easy, spending ↑","green"],["Inflation\nprices rise","orange"],["Central bank\nraises rates","violet"],
+    ["Less borrowing\nspending, incomes ↓","red"],["Recession\nprices fall (deflation)","blue"],["Central bank\nlowers rates","violet"]
+  ],{w:196,h:70,ir:120,dc:"violet",dur:10}),
+  {k:"text",x:360,y:250,text:"5–8 years",c:"gray",fs:18,step:6}
+]};
+D.stwave = (()=>{
+  const X=t=>60+700*t, T=t=>220-110*t;
+  const els=[{k:"arrow",pts:[[60,340],[775,340]],c:"gray"},{k:"text",x:770,y:360,text:"time",fs:15,c:"gray",anchor:"end"},
+    {k:"line",pts:[[60,220],[760,110]],c:"gray",dash:true},
+    {k:"line",pts:sample(160,t=>[X(t),T(t)-30*Math.sin(2*Math.PI*t*4)]),curve:true,c:"blue",sw:2.4,step:1}];
+  const peaks=[0,1,2,3].map(k=>{const t=(k+0.25)/4; return [X(t),T(t)-30];});
+  peaks.forEach(p=>els.push({k:"ell",x:p[0],y:p[1],w:14,h:14,c:"red",f:"red",step:2}));
+  els.push({k:"line",pts:peaks,c:"red",dash:true,step:2});
+  els.push({k:"text",x:290,y:56,text:"each cycle ends with more growth\nand more debt",c:"red",fs:17,step:2});
+  [0,1,2,3].forEach(k=>{const cx=X((k+0.5)/4), h=20+15*k; els.push({k:"rect",x:cx-28,y:340-h,w:56,h,c:"orange",f:"orange",fill2:"hachure",step:3});});
+  els.push({k:"text",x:120,y:380,text:"debt",c:"orange",fs:16,step:3,anchor:"start"});
+  return {w:800,h:395,els};
+})();
+D.longdebt = (()=>{
+  const X=t=>60+700*t;
+  const debt=t=> t<=0.8 ? 320-40*t-230*Math.pow(t,2.2) : 147+(t-0.8)/0.2*48;
+  const inc =t=> t<=0.8 ? 320-150*Math.pow(t,1.2) : 205+(t-0.8)/0.2*42;
+  const w=t=>6*Math.sin(2*Math.PI*t*9);
+  return {w:800,h:370,els:[
+    {k:"arrow",pts:[[60,340],[775,340]],c:"gray"},{k:"arrow",pts:[[60,340],[60,25]],c:"gray"},
+    {k:"text",x:770,y:358,text:"decades",fs:15,c:"gray",anchor:"end"},
+    {k:"line",pts:sample(120,t=>[X(t),inc(t)+w(t)]),curve:true,c:"blue",sw:2.4,step:1},
+    {k:"text",x:470,y:250,text:"income",c:"blue",fs:17,step:1},
+    {k:"line",pts:sample(120,t=>[X(t),debt(t)+w(t)]),curve:true,c:"red",sw:2.4,step:2},
+    {k:"text",x:430,y:170,text:"debt",c:"red",fs:17,step:2},
+    {k:"text",x:220,y:120,text:"boom: incomes ↑ assets ↑ stocks ↑",c:"green",fs:16,step:3},
+    {k:"text",x:220,y:144,text:"lenders lend more freely",c:"green",fs:16,step:3},
+    {k:"line",pts:[[620,330],[620,60]],c:"violet",dash:true,step:4},
+    {k:"text",x:630,y:70,text:"long-term debt peak",c:"violet",fs:16,anchor:"start",step:4},
+    {k:"text",x:630,y:94,text:"US + Europe 2008",c:"violet",fs:15,anchor:"start",step:4},
+    {k:"text",x:630,y:114,text:"Japan 1989",c:"violet",fs:15,anchor:"start",step:4},
+    {k:"text",x:630,y:134,text:"US 1929",c:"violet",fs:15,anchor:"start",step:4},
+    {k:"text",x:700,y:290,text:"deleveraging →",c:"red",fs:16,step:4}
+  ]};
+})();
+D.spiral = {w:720,h:500,auto:true,els:[
+  ...ring(5,360,250,200,185,[
+    ["Less spending","red"],["Less income","red"],["Forced asset sales\nprices fall","orange"],["Less collateral\nless wealth","orange"],["Less credit\nless borrowing","red"]
+  ],{w:196,h:68,ir:115,dc:"red",dur:7}),
+  {k:"text",x:360,y:250,text:"rates ≈ 0%\ncutting rates\ncannot help",c:"red",fs:17,step:5}
+]};
+D.levers = {w:800,h:400,auto:true,gap:1100,
+  onStep:(s,svg)=>{ const b=svg.querySelector('[data-grp="beam"]'); if(!b) return;
+    b.style.transform = s===1 ? "rotate(-7deg)" : "rotate(0deg)"; },
+  els:[
+  {k:"poly",pts:[[400,262],[350,340],[450,340]],c:"ink",f:"gray"},
+  {k:"line",pts:[[300,340],[500,340]],c:"ink"},
+  {k:"line",pts:[[80,258],[720,258]],c:"ink",sw:3.2,grp:"beam"},
+  {k:"rect",x:70,y:110,w:310,h:145,c:"red",f:"red",label:"Deflationary\n1. Cut spending\n2. Reduce debt\n3. Redistribute wealth",fs:17,grp:"beam",step:1},
+  {k:"rect",x:430,y:160,w:300,h:95,c:"green",f:"green",label:"Inflationary\n4. Print money",fs:18,grp:"beam",step:2},
+  {k:"text",x:400,y:375,text:"balance them: a “beautiful deleveraging”",c:"violet",fs:18,step:3}
+]};
+D.coop = {w:860,h:390,els:[
+  {k:"rect",x:20,y:30,w:250,h:120,c:"violet",f:"violet",label:"Central bank\ncan print money\ncan buy only\nfinancial assets",fs:16},
+  {k:"rect",x:590,y:30,w:250,h:120,c:"orange",f:"orange",label:"Central government\ncan buy goods, services\ncannot print money",fs:16},
+  {k:"arrow",pts:[[274,92],[586,92]],c:"violet",step:1},
+  {k:"text",x:430,y:58,text:"buys government bonds\n(lends new money)",c:"violet",fs:16,step:1},
+  {k:"arrow",pts:[[715,154],[715,232]],c:"orange",step:2},
+  {k:"rect",x:590,y:236,w:250,h:110,c:"green",f:"green",label:"People\nstimulus + benefits\nincomes rise",fs:16,step:2},
+  {k:"arrow",pts:[[145,154],[145,232]],c:"violet",step:3},
+  {k:"rect",x:20,y:236,w:250,h:110,c:"blue",f:"blue",label:"Asset owners\nasset prices rise\n(helps only them)",fs:16,step:3},
+  {k:"text",x:430,y:270,text:"government debt ↑",c:"orange",fs:17,step:4},
+  {k:"text",x:430,y:300,text:"total debt burden ↓",c:"green",fs:17,step:4}
+]};
+D.reflation = {w:920,h:150,auto:true,els:(()=>{
+  const L=["Incomes rise","Borrowers look\ncreditworthy","Lenders lend\nagain","Spending\nrises","Growth returns\n(reflation)"];
+  const C=["blue","violet","orange","green","green"]; const e=[];
+  L.forEach((l,i)=>{ const x=10+i*182; e.push({k:"rect",x,y:30,w:150,h:84,c:C[i],f:C[i],label:l,fs:16,step:i+1}); if(i<4) e.push({k:"arrow",pts:[[x+152,72],[x+180,72]],step:i+2}); });
+  return e; })()};
+D.rules = {w:800,h:310,els:[
+  {k:"rect",x:30,y:100,w:200,h:100,c:"red",f:"red",label:"Debt\ngrowth",fs:20,step:1},
+  {k:"text",x:265,y:150,text:"≤",fs:44,step:1},
+  {k:"rect",x:300,y:100,w:200,h:100,c:"blue",f:"blue",label:"Income\ngrowth",fs:20,step:1},
+  {k:"text",x:535,y:150,text:"≤",fs:44,step:2},
+  {k:"rect",x:570,y:100,w:200,h:100,c:"green",f:"green",label:"Productivity\ngrowth",fs:20,step:2},
+  {k:"arrow",pts:[[670,96],[670,30]],c:"green",sw:2.6,step:3},
+  {k:"text",x:560,y:40,text:"Rule 3: raise it",c:"green",fs:17,step:3},
+  {k:"text",x:265,y:245,text:"Rule 1\nor debt burdens crush you",c:"red",fs:16,step:1},
+  {k:"text",x:535,y:245,text:"Rule 2\nor you become uncompetitive",c:"blue",fs:16,step:2}
+]};
+
+/* ---------- renderer ---------- */
+function svgText(parent, x, y, str, o){
+  const fs=o.fs||18, lines=String(str).split("\n"), lh=fs*1.25;
+  const t=document.createElementNS(NS,"text");
+  t.setAttribute("x",x); t.setAttribute("text-anchor",o.anchor||"middle");
+  t.setAttribute("font-size",fs); t.setAttribute("font-family","Kalam, 'Comic Sans MS', cursive");
+  t.style.fill=`var(--c-${o.c||"ink"})`;
+  lines.forEach((ln,i)=>{ const s=document.createElementNS(NS,"tspan"); s.setAttribute("x",x);
+    s.setAttribute("y", y-(lines.length-1)*lh/2+i*lh); s.setAttribute("dominant-baseline","central");
+    if(i===0 && lines.length>1 && o.head!==false && o.k!=="text") s.setAttribute("font-weight","700");
+    s.textContent=ln; t.appendChild(s); });
+  parent.appendChild(t);
+}
+function head(rc, p1, p2, o){
+  const a=Math.atan2(p2[1]-p1[1],p2[0]-p1[0]), L=13, s=0.5;
+  return rc.linearPath([[p2[0]-L*Math.cos(a-s),p2[1]-L*Math.sin(a-s)],p2,[p2[0]-L*Math.cos(a+s),p2[1]-L*Math.sin(a+s)]],o);
+}
+function tokenize(g){
+  g.querySelectorAll("[stroke],[fill]").forEach(n=>{ for(const a of ["stroke","fill"]){ const v=n.getAttribute(a);
+    if(v && /^[cf]k-/.test(v)){ n.style[a]=`var(--${v[0]}-${v.slice(3)})`; n.removeAttribute(a); } } });
+}
+function render(spec, svg){
+  svg.innerHTML=""; svg.setAttribute("viewBox",`0 0 ${spec.w} ${spec.h}`);
+  const rc=rough.svg(svg), groups={};
+  spec.els.forEach((e,i)=>{
+    const g=document.createElementNS(NS,"g"); g.classList.add("el"); g.dataset.step=e.step||0;
+    const o={seed:(i+3)*17, roughness:e.rough??1.1, bowing:1, strokeWidth:e.sw||1.7, stroke:e.c==="none"?"none":"ck-"+(e.c||"ink")};
+    if(e.f){ o.fill="fk-"+e.f; o.fillStyle=e.fill2||"solid"; o.hachureGap=7; o.fillWeight=1.3; }
+    if(e.dash) o.strokeLineDash=[8,7];
+    const add=n=>g.appendChild(n);
+    switch(e.k){
+      case "rect": add(rc.rectangle(e.x,e.y,e.w,e.h,o)); if(e.label) svgText(g,e.x+e.w/2,e.y+e.h/2,e.label,e); break;
+      case "ell": add(rc.ellipse(e.x,e.y,e.w,e.h,o)); if(e.label) svgText(g,e.x,e.y,e.label,e); break;
+      case "poly": add(rc.polygon(e.pts,o)); break;
+      case "line": add(e.curve?rc.curve(e.pts,o):rc.linearPath(e.pts,o)); break;
+      case "arrow": { const p=e.pts; add(e.curve?rc.curve(p,o):rc.linearPath(p,o)); add(head(rc,p[p.length-2],p[p.length-1],{...o,fill:undefined})); break; }
+      case "text": svgText(g,e.x,e.y,e.text,e); break;
+      case "dot": {
+        if(REDUCE) return;
+        const c=document.createElementNS(NS,"circle"); c.setAttribute("r",8); c.style.fill=`var(--c-${e.c})`; c.style.opacity=".85";
+        const m=document.createElementNS(NS,"animateMotion"); m.setAttribute("dur",e.dur+"s"); m.setAttribute("repeatCount","indefinite");
+        m.setAttribute("path","M"+e.pts.map(p=>p.join(",")).join(" L")); c.appendChild(m); add(c); g.classList.add("dot"); break; }
+    }
+    tokenize(g);
+    let parent=svg;
+    if(e.grp){ if(!groups[e.grp]){ const gg=document.createElementNS(NS,"g"); gg.dataset.grp=e.grp;
+        gg.style.transformBox="view-box"; gg.style.transformOrigin="400px 258px"; gg.style.transition="transform .9s cubic-bezier(.3,1.4,.5,1)"; svg.appendChild(gg); groups[e.grp]=gg; }
+      parent=groups[e.grp]; }
+    parent.appendChild(g);
+  });
+}
+function reveal(g){
+  g.style.transition="opacity .35s"; g.style.opacity=1;
+  g.querySelectorAll("path").forEach(p=>{ let L=0; try{ L=p.getTotalLength(); }catch(_){}
+    if(!L) return; p.style.transition="none"; p.style.strokeDasharray=L; p.style.strokeDashoffset=L; p.getBoundingClientRect();
+    p.style.transition="stroke-dashoffset .75s ease"; p.style.strokeDashoffset=0;
+    setTimeout(()=>{ p.style.transition=""; p.style.strokeDasharray=""; p.style.strokeDashoffset=""; },850); });
+}
+function play(spec, svg){
+  if(REDUCE) return;
+  (svg._t||[]).forEach(clearTimeout); svg._t=[];
+  const els=[...svg.querySelectorAll(".el")]; const max=Math.max(0,...els.map(g=>+g.dataset.step));
+  els.forEach(g=>{ if(+g.dataset.step>0){ g.style.transition="none"; g.style.opacity=0; } });
+  spec.onStep && spec.onStep(0,svg);
+  for(let s=1;s<=max;s++) svg._t.push(setTimeout(()=>{ els.filter(g=>+g.dataset.step===s).forEach(reveal); spec.onStep && spec.onStep(s,svg); }, 200+(s-1)*(spec.gap||850)));
+}
+
+/* ---------- Excalidraw export ---------- */
+function toExcalidraw(spec, name){
+  let n=0; const out=[], now=Date.now();
+  const base=(type,x,y,w,h,e)=>({id:`${name}-${n++}`, type, x, y, width:w, height:h, angle:0,
+    strokeColor:e.c==="none"?"transparent":EX_STROKE[e.c||"ink"], backgroundColor:e.f?EX_FILL[e.f]:"transparent",
+    fillStyle:e.fill2||"solid", strokeWidth:2, strokeStyle:e.dash?"dashed":"solid", roughness:1, opacity:100,
+    groupIds:[], frameId:null, roundness:null, seed:1000+n*7, version:1, versionNonce:2000+n*13, isDeleted:false,
+    boundElements:null, updated:now, link:null, locked:false});
+  const txt=(cx,cy,str,e,anchor)=>{ const fs=e.fs||18, lines=String(str).split("\n"); const w=Math.max(...lines.map(l=>l.length))*fs*0.55, h=lines.length*fs*1.25;
+    const x= anchor==="start"?cx : anchor==="end"? cx-w : cx-w/2;
+    out.push({...base("text",x,cy-h/2,w,h,{c:e.c}), backgroundColor:"transparent", text:str, originalText:str, fontSize:fs, fontFamily:1,
+      textAlign:anchor==="start"?"left":anchor==="end"?"right":"center", verticalAlign:"top", containerId:null, lineHeight:1.25, autoResize:true}); };
+  const lin=(e,arrow)=>{ const p=e.pts, x0=p[0][0], y0=p[0][1]; const xs=p.map(q=>q[0]), ys=p.map(q=>q[1]);
+    out.push({...base(arrow?"arrow":"line",x0,y0,Math.max(...xs)-Math.min(...xs),Math.max(...ys)-Math.min(...ys),e),
+      backgroundColor:e.f?EX_FILL[e.f]:"transparent", points:p.map(q=>[q[0]-x0,q[1]-y0]), lastCommittedPoint:null, startBinding:null, endBinding:null,
+      startArrowhead:null, endArrowhead:arrow?"arrow":null, roundness:e.curve?{type:2}:null}); };
+  spec.els.forEach(e=>{
+    switch(e.k){
+      case "rect": out.push({...base("rectangle",e.x,e.y,e.w,e.h,e), roundness:{type:3}}); if(e.label) txt(e.x+e.w/2,e.y+e.h/2,e.label,{...e,c:"ink"}); break;
+      case "ell": out.push(base("ellipse",e.x-e.w/2,e.y-e.h/2,e.w,e.h,e)); break;
+      case "poly": lin({...e,pts:[...e.pts,e.pts[0]]},false); break;
+      case "line": lin(e,false); break;
+      case "arrow": lin(e,true); break;
+      case "text": txt(e.x,e.y,e.text,e,e.anchor); break;
+    }
+  });
+  return JSON.stringify({type:"excalidraw/clipboard", elements:out, files:{}});
+}
+
+/* ---------- mount diagrams ---------- */
+function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.hidden=false; clearTimeout(t._h); t._h=setTimeout(()=>t.hidden=true,4200); }
+const io = ("IntersectionObserver" in window) ? new IntersectionObserver(es=>es.forEach(en=>{
+  if(en.isIntersecting){ const f=en.target; io.unobserve(f); play(D[f.dataset.d], f.querySelector("svg")); } }),{threshold:.45}) : null;
+document.querySelectorAll("figure.dg").forEach(fig=>{
+  const name=fig.dataset.d, spec=D[name]; if(!spec) return;
+  const cap=fig.querySelector("figcaption");
+  const wrap=document.createElement("div"); wrap.className="scroll";
+  const svg=document.createElementNS(NS,"svg"); svg.setAttribute("role","img"); svg.setAttribute("aria-label",cap?cap.textContent:name);
+  wrap.appendChild(svg); fig.insertBefore(wrap, fig.firstChild);
+  const bar=document.createElement("div"); bar.className="bar"; if(cap) bar.appendChild(cap);
+  const btns=document.createElement("div"); btns.className="btns";
+  const pb=document.createElement("button"); pb.type="button"; pb.className="btn primary"; pb.textContent="▶ Animate";
+  pb.addEventListener("click",()=>{ if(REDUCE){ toast("Animation is off because your system asks for reduced motion."); return; } play(spec,svg); });
+  const cb=document.createElement("button"); cb.type="button"; cb.className="btn"; cb.textContent="Copy for Excalidraw";
+  cb.addEventListener("click",()=>{ const json=toExcalidraw(spec,name);
+    const fallback=()=>{ let ta=fig.querySelector("textarea"); if(!ta){ ta=document.createElement("textarea"); ta.readOnly=true; ta.setAttribute("aria-label","Excalidraw data"); fig.appendChild(ta); }
+      ta.value=json; ta.focus(); ta.select(); toast("Copy the selected text. Then paste it into excalidraw.com."); };
+    try{ navigator.clipboard.writeText(json).then(()=>toast("Copied. Open excalidraw.com and paste with Ctrl+V or ⌘V."), fallback); }catch(_){ fallback(); } });
+  btns.append(pb,cb); bar.appendChild(btns); fig.appendChild(bar);
+  render(spec, svg);
+  if(spec.auto && io && !REDUCE) io.observe(fig);
+});
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(()=>{});
+
+/* ---------- calculator ---------- */
+(function(){
+  const svg=document.getElementById("calc-svg"), out=document.getElementById("calc-out");
+  const d0=document.getElementById("calc-d0"), r=document.getElementById("calc-r"), g=document.getElementById("calc-g");
+  function draw(animate){
+    const D0=+d0.value, R=+r.value/100, G=+g.value/100, Y=15;
+    document.getElementById("v-d0").textContent=D0+"%"; document.getElementById("v-r").textContent=(R*100).toFixed(1)+"%"; document.getElementById("v-g").textContent=(G*100).toFixed(1)+"%";
+    const vals=[]; for(let t=0;t<=Y;t++) vals.push(D0*Math.pow((1+R)/(1+G),t));
+    const maxV=Math.max(D0*2, ...vals)*1.05; const W=720,H=300,x0=60,x1=700,y0=260,y1=24;
+    const X=t=>x0+(x1-x0)*t/Y, Yv=v=>y0-(y0-y1)*v/maxV;
+    const step = maxV>600?200: maxV>300?100:50;
+    const els=[{k:"arrow",pts:[[x0,y0],[x1+15,y0]],c:"gray"},{k:"arrow",pts:[[x0,y0],[x0,y1-10]],c:"gray"},
+      {k:"text",x:x1+10,y:y0+22,text:"years",c:"gray",fs:14,anchor:"end"}];
+    for(let v=step; v<maxV; v+=step) els.push({k:"text",x:x0-8,y:Yv(v),text:v+"%",c:"gray",fs:13,anchor:"end"},{k:"line",pts:[[x0,Yv(v)],[x1,Yv(v)]],c:"gray",rough:0.3,sw:0.6,dash:true});
+    [0,5,10,15].forEach(t=>els.push({k:"text",x:X(t),y:y0+18,text:String(t),c:"gray",fs:13}));
+    els.push({k:"line",pts:[[x0,Yv(D0)],[x1,Yv(D0)]],c:"violet",dash:true,sw:1.2});
+    els.push({k:"text",x:x0+6,y:Yv(D0)-12,text:"start",c:"violet",fs:13,anchor:"start"});
+    const up = vals[10]>D0+0.05, down = vals[10]<D0-0.05;
+    const col = up?"red":down?"green":"blue";
+    els.push({k:"line",pts:vals.map((v,t)=>[X(t),Yv(v)]),curve:true,c:col,sw:2.8,step:1});
+    els.push({k:"ell",x:X(10),y:Yv(vals[10]),w:12,h:12,c:col,f:col,step:1});
+    render({w:W,h:H,els},svg); if(animate) play({els},svg);
+    const v10=Math.round(vals[10]);
+    out.textContent = up ? `After 10 years the debt burden is ${v10}%. It rises. Income grows slower than the interest on the debt.`
+      : down ? `After 10 years the debt burden is ${v10}%. It falls. Income grows faster than the interest on the debt.`
+      : `After 10 years the debt burden is ${v10}%. It stays the same. Income grows at the same rate as the interest on the debt.`;
+  }
+  [d0,r,g].forEach(el=>{ el.addEventListener("input",()=>draw(false)); el.addEventListener("change",()=>draw(true)); });
+  draw(false);
+})();
+
+/* ---------- quiz data ---------- */
+// each option: [text, why]. a = index of the correct option.
+const QUIZ = {
+map:[
+ {id:"m1",l:"Basic",q:"Which force is the slow, steady trend line under the cycles?",a:0,o:[
+  ["Productivity growth","Correct. Productivity grows slowly and steadily. It sets the long-run trend."],
+  ["The long-term debt cycle","No. The long-term debt cycle is a wave around the trend. It is not the trend."],
+  ["The short-term debt cycle","No. This is the fastest wave. It lasts about 5 to 8 years."],
+  ["Central bank policy","No. Central bank policy is not one of the three forces. It mainly steers the short-term cycle."]]},
+ {id:"m2",l:"Basic",q:"Which pair of time spans matches the two debt cycles?",a:0,o:[
+  ["Short-term: 5 to 8 years. Long-term: 75 to 100 years.","Correct."],
+  ["Short-term: 1 to 2 years. Long-term: 10 to 15 years.","No. Both spans are too short."],
+  ["Short-term: 5 to 8 years. Long-term: 25 to 30 years.","Close, but no. The short span is correct. The long cycle is much longer: about 75 to 100 years."],
+  ["Short-term: 8 to 10 years. Long-term: 50 years.","No. The video gives 5 to 8 years and 75 to 100 years."]]},
+ {id:"m3",l:"Deep",q:"Imagine an economy with no credit at all. Which of the three forces still exist?",a:0,o:[
+  ["Only productivity growth","Correct. Without credit, you can spend more only if you earn more. You earn more only if you produce more. The cycles come from borrowing."],
+  ["Only the short-term debt cycle, because the central bank still sets rates","No. With no credit, interest rates have nothing to act on. No borrowing means no debt cycle."],
+  ["All three, but the cycles are smaller","No. The video says the cycles come from borrowing. No credit means no debt cycles."],
+  ["None, because the economy cannot grow without credit","No. The economy can still grow through productivity. It grows more slowly and more smoothly."]]}
+],
+tx:[
+ {id:"t1",l:"Basic",q:"What is total spending in an economy?",a:1,o:[
+  ["The money spent","No. This leaves out credit, the larger part."],
+  ["The money spent plus the credit spent","Correct. Credit spends like money, so you add both."],
+  ["The money spent minus the debt repaid","No. The video adds money and credit. It does not subtract repayments."],
+  ["The credit spent, because most money is credit","Close, but no. Most of what people call money is credit. But real money is also spent, so total spending includes both."]]},
+ {id:"t2",l:"Scenario",q:"In one market, buyers spend $1,000 and sellers sell 200 units. Next year, buyers spend $1,500 and sellers sell 250 units. What happens to the price?",a:0,o:[
+  ["It rises from $5 to $6","Correct. Price = spending ÷ quantity. $1,000 ÷ 200 = $5. $1,500 ÷ 250 = $6."],
+  ["It rises from $5 to $7.50","No. $7.50 = $1,500 ÷ 200. This uses the new spending with the old quantity."],
+  ["It stays at $5, because quantity also rose","No. Quantity rose 25%. Spending rose 50%. Spending grew faster, so the price rose."],
+  ["It falls, because sellers sold more units","No. More units alone do not lower the price. Compare spending growth with quantity growth."]]},
+ {id:"t3",l:"Basic",q:"Which statement describes the two parts of government correctly?",a:0,o:[
+  ["The central bank sets interest rates and prints money. The central government collects taxes and spends.","Correct."],
+  ["The central government sets interest rates. The central bank collects taxes and spends.","No. This swaps the two roles."],
+  ["The central bank collects taxes and prints money. The central government spends.","No. The central bank does not collect taxes."],
+  ["Both parts can print money. Only the central bank sets interest rates.","No. Only the central bank can print money. This fact is very important in a deleveraging."]]},
+ {id:"t4",l:"Deep",q:"Why does Dalio tell you to watch credit most closely?",a:0,o:[
+  ["It is the biggest and the most volatile part of the economy","Correct. Its size and its large swings make credit the main source of change."],
+  ["It is the only part that the central bank controls","No. The central bank also controls money. And control is not the reason the video gives."],
+  ["It is always harmful, because it creates debt","No. The video says credit is good when it finances things that produce income."],
+  ["It is the smallest part, so it changes fastest","No. Credit is the biggest part: about $50 trillion against about $3 trillion of money."]]},
+ {id:"t5",l:"Interplay",q:"Credit in an economy suddenly falls by half. The amount of money stays the same. What happens to total spending?",a:1,o:[
+  ["It stays the same, because the amount of money stays the same","No. Credit spends like money. Less credit means less spending."],
+  ["It falls a lot, because credit is much larger than money","Correct. Total spending = money + credit. Credit is the larger part, so a cut in credit is a large cut in spending."],
+  ["It falls only a little, because credit is only a promise","No. A promise to pay still buys goods. Credit spends like money."],
+  ["It rises, because people use cash in place of credit","No. People hold little money compared with credit. Cash cannot fill the gap."]]}
+],
+credit:[
+ {id:"c1",l:"Basic",q:"When is credit created?",a:0,o:[
+  ["When a borrower promises to repay and a lender believes the promise","Correct. Any two people can create credit this way."],
+  ["When the central bank prints new money","No. Printing creates money, not credit."],
+  ["When the borrower repays the principal and interest","No. Repayment ends the credit. It does not create it."],
+  ["When a bank has spare deposits to lend","No. The video says credit needs only a promise and belief. It can come “out of thin air”."]]},
+ {id:"c2",l:"Deep",q:"A friend lends you $50. Right after the loan, which statement is correct?",a:0,o:[
+  ["The debt is an asset to your friend and a liability to you","Correct. The lender holds a claim. The borrower owes it."],
+  ["The debt is an asset to you and a liability to your friend","No. This swaps the sides. You hold $50 of cash, but the debt itself is what you owe."],
+  ["No asset or liability exists until you repay","No. The asset and liability exist from the moment credit is created. Repayment ends them."],
+  ["The debt is a liability to both of you until you repay","No. One side holds an asset. The other side holds an equal liability."]]},
+ {id:"c3",l:"Basic",q:"The borrower repays the principal plus interest. What happens to the asset and the liability?",a:0,o:[
+  ["Both disappear. The transaction is settled.","Correct."],
+  ["They change sides","No. Nothing is owed after repayment, so nothing changes sides."],
+  ["Both grow by the amount of interest","No. Interest is part of what the borrower pays. After payment, nothing is owed."],
+  ["The liability disappears, but the lender keeps the asset","No. The lender receives the payment. The claim itself ends."]]},
+ {id:"c4",l:"Deep",q:"Which two things make a borrower creditworthy?",a:0,o:[
+  ["Income that is large compared with debt, and valuable collateral","Correct. The video calls these the ability to repay and collateral."],
+  ["A high income, and valuable collateral","Close, but no. A high income with an even higher debt gives no ability to repay. Income must be large compared with debt."],
+  ["Income that is large compared with debt, and a history of high spending","No. High spending does not protect the lender. Collateral does."],
+  ["Low debt and a low interest rate","No. The interest rate is not a property of the borrower."]]},
+ {id:"c5",l:"Interplay",q:"Which order shows the self-reinforcing growth pattern?",a:0,o:[
+  ["Income rises → borrower is more creditworthy → borrowing rises → spending rises → another person's income rises","Correct. The last step feeds the first step for the next person."],
+  ["Borrowing rises → your income rises → spending rises → you are more creditworthy","No. Borrowing does not raise your own income. It raises your spending, which is someone else's income."],
+  ["Spending rises → your own income rises → you borrow less","No. Your spending raises another person's income, not your own."],
+  ["Creditworthiness rises → interest rates fall → spending rises → income rises","No. The central bank sets interest rates. They are not a step in this loop."]]},
+ {id:"c6",l:"Interplay",q:"You borrow and spend more. Why does this make it easier for another person to borrow?",a:0,o:[
+  ["Your extra spending is their extra income. More income makes them more creditworthy.","Correct."],
+  ["Banks share one credit limit between buyers and sellers","No. The video does not describe this."],
+  ["Your borrowing pushes interest rates down for everyone","No. More borrowing does not lower rates. The link is income."],
+  ["Your borrowing increases the value of their collateral","No. The video makes the link through income, not collateral."]]}
+],
+cycles:[
+ {id:"y1",l:"Basic",q:"Which statement matches the video?",a:0,o:[
+  ["Productivity matters most in the long run. Credit matters most in the short run.","Correct."],
+  ["Productivity matters most in the short run. Credit matters most in the long run.","No. This swaps the two."],
+  ["Credit matters most in both the short run and the long run","No. In the long run, only productivity raises living standards."],
+  ["Productivity and credit matter equally at all times","No. The video gives each one a different time scale."]]},
+ {id:"y2",l:"Deep",q:"Why does credit, not productivity, cause the swings in an economy?",a:0,o:[
+  ["Productivity grows steadily. Debt lets spending rise above output and then forces it below output.","Correct."],
+  ["Productivity cannot be measured, so it cannot cause swings","No. Measurement is not the point. Productivity simply does not swing much."],
+  ["Laws and regulations make credit swing","No. The video says cycles come from human nature and how credit works, not from laws."],
+  ["Productivity falls in every recession, and credit follows it","No. The cause runs the other way. Credit swings drive the cycle."]]},
+ {id:"y3",l:"Deep",q:"Borrowing “pulls spending forward”. What does it create in the future?",a:0,o:[
+  ["A period when you must spend less than you earn","Correct. You repay your future self."],
+  ["A period when you can spend more than you earn","No. That is the borrowing period itself. Repayment comes after."],
+  ["A permanent rise in your income","No. Borrowing raises spending now, not income. Only productivity raises income for good."],
+  ["A period when interest rates must fall","No. Borrowing creates a repayment period. It says nothing about rates."]]},
+ {id:"y4",l:"Interplay",q:"Which statement about the bar tab is correct?",a:0,o:[
+  ["Cash settles the deal at once. A tab creates an asset and a liability that last until you pay.","Correct."],
+  ["Cash creates an asset and a liability. A tab settles the deal at once.","No. This swaps the two."],
+  ["Both settle the deal at once. A tab only adds interest.","No. A tab is a promise. The deal is not settled until you pay."],
+  ["A tab settles the deal at once, because the bartender has your promise","No. A promise is not payment. The debt stays until you pay."]]},
+ {id:"y5",l:"Basic",q:"In the video, how much credit and money existed in the US?",a:0,o:[
+  ["About $50 trillion of credit and about $3 trillion of money","Correct. Credit was about 16 times larger."],
+  ["About $50 trillion of money and about $3 trillion of credit","No. This swaps the two."],
+  ["About $50 trillion of each","No. Credit is much bigger. Most of what people call money is credit."],
+  ["About $3 trillion of each","No. Credit is much bigger than money."]]}
+],
+growth:[
+ {id:"g1",l:"Interplay",q:"Two people each borrow $10,000. One buys a big TV. The other buys a tractor that increases the harvest. Which statement is correct?",a:0,o:[
+  ["The TV loan is bad credit and the tractor loan is good credit. The tractor produces income to repay the debt.","Correct."],
+  ["Both loans are bad, because every loan creates a cycle","No. Every loan creates a cycle, but the video says credit is good when it produces income."],
+  ["Both loans are good, because both raise someone's income today","Close, but no. Both raise the seller's income today. Only the tractor creates income to repay the debt later."],
+  ["The TV loan is good, because consumer spending drives the economy","No. Spending drives the economy today. A TV does not help you repay tomorrow."]]},
+ {id:"g2",l:"Scenario",q:"Person A earns $100,000, borrows 10% of income, and spends it all. A's spending is Person B's income. B also borrows 10% of income. How much does B spend?",a:0,o:[
+  ["$121,000","Correct. B earns $110,000 and borrows $11,000."],
+  ["$120,000","No. This adds $10,000 again. B borrows 10% of B's own income, which is $11,000."],
+  ["$110,000","No. That is B's income. B also borrows."],
+  ["$111,000","No. Check the sum: $110,000 + $11,000."]]},
+ {id:"g3",l:"Deep",q:"With credit, how do incomes compare with productivity?",a:0,o:[
+  ["Incomes can rise faster than productivity in the short run, but not in the long run","Correct."],
+  ["Incomes can rise faster than productivity in the long run, but not in the short run","No. This swaps the two time scales."],
+  ["Incomes can never rise faster than productivity","No. Credit lets them rise faster for a while."],
+  ["Incomes can rise faster than productivity forever, if credit keeps growing","No. Debt must be repaid. Over the long run, incomes follow productivity."]]},
+ {id:"g4",l:"Interplay",q:"The borrowing chain shows growth. What happens when the same chain runs in reverse?",a:0,o:[
+  ["Each person borrows less and spends less. This lowers the next person's income and borrowing.","Correct. The pattern feeds on itself in both directions."],
+  ["Only the first person is affected. The others keep their income.","No. Each person's spending is the next person's income."],
+  ["Incomes fall, but borrowing rises to fill the gap","No. Lower income makes people less creditworthy, so borrowing also falls."],
+  ["Prices fall, so real incomes rise and the chain stops","No. The video does not say this. The chain keeps feeding on itself."]]}
+],
+short:[
+ {id:"s1",l:"Basic",q:"In an expansion, when do prices rise?",a:0,o:[
+  ["When spending and incomes grow faster than the production of goods","Correct."],
+  ["When the production of goods grows faster than spending","No. That pushes prices down."],
+  ["When the central bank raises interest rates","No. The central bank raises rates because of inflation. The rate rise does not cause it."],
+  ["When credit becomes hard to get","No. Hard-to-get credit slows spending. Prices then fall."]]},
+ {id:"s2",l:"Interplay",q:"Which order is correct after inflation starts?",a:0,o:[
+  ["Central bank raises rates → borrowing falls and debt payments rise → spending slows → incomes fall → prices fall","Correct."],
+  ["Central bank raises rates → incomes fall → borrowing falls → spending rises","No. Spending does not rise after a rate rise. And incomes fall because spending falls, not before it."],
+  ["Spending slows → central bank raises rates → incomes fall → prices rise","No. The rate rise comes first, and prices fall at the end."],
+  ["Central government raises taxes → spending slows → incomes fall → prices fall","No. In this cycle the central bank acts, through interest rates."]]},
+ {id:"s3",l:"Deep",q:"Higher interest rates slow spending through two channels. Which pair is correct?",a:0,o:[
+  ["Fewer people can afford new loans. Payments on existing debt rise.","Correct."],
+  ["Fewer people can afford new loans. Productivity falls.","Half right. Productivity is not the second channel. Payments on existing debt rise."],
+  ["Payments on existing debt rise. The government collects more tax.","Half right. Taxes are not part of this step."],
+  ["People save more. Banks stop all lending.","No. The video names new borrowing and existing payments."]]},
+ {id:"s4",l:"Deep",q:"Who mainly controls the short-term debt cycle?",a:1,o:[
+  ["Lenders and borrowers, because their willingness limits spending","Close, but no. Their willingness limits spending. But the video says the central bank controls the cycle, through interest rates."],
+  ["The central bank","Correct."],
+  ["The central government","No. The central government taxes and spends. The central bank sets rates."],
+  ["Nobody. The cycle is random.","No. The video calls it a machine. It runs in a predictable way."]]},
+ {id:"s5",l:"Deep",q:"Compared with the cycle before, how does each short-term cycle end?",a:0,o:[
+  ["With more growth and more debt","Correct. This build-up creates the long-term debt cycle."],
+  ["With more growth and less debt","No. Debt grows from cycle to cycle."],
+  ["With the same growth and more debt","No. Growth is also higher. That makes the debt feel safe."],
+  ["With less growth and more debt","No. During the long upswing, growth still rises."]]},
+ {id:"s6",l:"Scenario",q:"Prices are falling a little. The recession is mild. Inflation is still a concern. What does the video say the central bank does?",a:2,o:[
+  ["It lowers rates at once, because prices are falling","No. The video gives two conditions for a cut. Both must be true."],
+  ["It raises rates again, because prices are falling","No. Raising rates would slow spending more."],
+  ["It waits. It lowers rates when the recession is too severe and inflation is no longer a problem.","Correct. Here neither condition is met yet."],
+  ["It prints money, because rates cannot help","No. Printing is for a deleveraging, when rates are near 0%."]]}
+],
+long:[
+ {id:"l1",l:"Basic",q:"Why do debts rise faster than incomes over decades?",a:0,o:[
+  ["Human nature: people prefer to borrow and spend more rather than repay debt","Correct."],
+  ["Central banks keep interest rates high","No. The video does not say this."],
+  ["Productivity falls over time","No. The video names human nature as the cause."],
+  ["Laws require banks to lend more each year","No. The video does not say this."]]},
+ {id:"l2",l:"Basic",q:"How does Dalio define the debt burden?",a:0,o:[
+  ["Debt ÷ income","Correct."],
+  ["Debt − income","No. The video uses a ratio, not a difference."],
+  ["Interest payments ÷ income","Close, but no. That measures the cost of debt. The video defines the burden as debt to income."],
+  ["Debt ÷ assets","No. Assets matter for collateral. The burden is debt to income."]]},
+ {id:"l3",l:"Deep",q:"Why can debts rise for decades without trouble?",a:0,o:[
+  ["Incomes grow almost as fast as debt, and asset prices rise. Borrowers stay creditworthy.","Correct."],
+  ["Incomes grow faster than debt, so the burden falls","Close, but no. Debt grows faster. Incomes grow almost as fast, so the burden rises slowly."],
+  ["The central bank cancels part of the debt in each cycle","No. The video does not say this."],
+  ["Interest rates rise, so lenders earn more","No. Higher rates do not help borrowers stay creditworthy."]]},
+ {id:"l4",l:"Interplay",q:"What reverses the long-term debt cycle at the peak?",a:0,o:[
+  ["Debt payments grow faster than incomes, so people must reduce spending","Correct."],
+  ["The central bank raises rates to stop inflation","No. That reverses a short-term cycle. The long-term peak comes from debt burdens that are too big."],
+  ["The stock market falls first and causes the rest","No. The market falls as a result of the reversal."],
+  ["The government raises taxes on the wealthy","No. That happens later, during the deleveraging."]]},
+ {id:"l5",l:"Deep",q:"Borrowers carry more debt, but lenders lend even more freely. Why?",a:0,o:[
+  ["Everyone looks at recent results: rising incomes, rising asset prices, a rising stock market","Correct."],
+  ["Interest rates are high, so lending pays more","No. The video gives recent good results as the reason."],
+  ["The debt burden falls during a boom","No. The debt burden rises. Rising incomes only hide it."],
+  ["The government guarantees all loans","No. The video does not say this."]]},
+ {id:"l6",l:"Basic",q:"Which long-term debt peaks does the video name?",a:0,o:[
+  ["2008 (US and Europe), 1989 (Japan), 1929 (US)","Correct."],
+  ["2000 (US), 1997 (Asia), 1929 (US)","No. Only 1929 is correct."],
+  ["2008 (US and Europe), 1989 (Japan), 1971 (US)","Close, but no. The third peak in the video is 1929."],
+  ["2008 (US and Europe), 1990 (Germany), 1929 (US)","Close, but no. The video names Japan in 1989."]]}
+],
+delev:[
+ {id:"d1",l:"Deep",q:"What is the key difference between a recession and a deleveraging?",a:0,o:[
+  ["In a deleveraging, rates are already near 0% and debt burdens are too big. Lower rates cannot fix it.","Correct."],
+  ["A deleveraging is only a longer and deeper recession","No. It looks similar, but the tool that ends a recession does not work."],
+  ["In a deleveraging, the central bank raises rates to stop inflation","No. Prices fall in a deleveraging. Rates are near 0%."],
+  ["In a recession, debt burdens are too big. In a deleveraging, they are normal.","No. This swaps the two."]]},
+ {id:"d2",l:"Interplay",q:"Borrowers must sell assets to make debt payments. Why does this make things worse?",a:0,o:[
+  ["The sales push asset prices down. Collateral loses value. Borrowers become less creditworthy.","Correct."],
+  ["The sales give borrowers cash, so the problem ends","No. The sales flood the market and push prices down."],
+  ["The sales push asset prices up, because buyers see a bargain","No. Many sellers at once push prices down."],
+  ["The sales affect only the stock market, not banks","No. Real estate also falls, and banks get into trouble."]]},
+ {id:"d3",l:"Basic",q:"Which order shows the vicious cycle?",a:0,o:[
+  ["Less spending → less income → less wealth → less credit → less borrowing","Correct."],
+  ["Less borrowing → less credit → more spending → less income","No. Less credit cannot produce more spending."],
+  ["Less income → less spending → more credit → less wealth","No. Credit falls, it does not rise."],
+  ["Less wealth → less income → more borrowing → less spending","No. Borrowing falls because borrowers are less creditworthy."]]},
+ {id:"d4",l:"Scenario",q:"Interest rates are 4%. The economy slows. Debt burdens are moderate. The central bank cuts rates to 1%, and borrowing grows again. What is this?",a:0,o:[
+  ["A recession. The rate cut worked.","Correct."],
+  ["A deleveraging, because the economy slowed","No. Not every slowdown is a deleveraging. Here the rate cut worked."],
+  ["A deleveraging, because rates fell by a large amount","No. Rates still had room to fall, and lower rates restarted borrowing."],
+  ["A long-term debt peak","No. Debt burdens are moderate. At a peak they are too big."]]},
+ {id:"d5",l:"Deep",q:"In a deleveraging, why do borrowers stop borrowing, even when a lender offers a loan?",a:0,o:[
+  ["They feel crippled by debt and do not want more","Correct."],
+  ["The law forbids new loans","No. The video does not say this."],
+  ["Interest rates are too high","No. Rates are near 0%."],
+  ["The central bank stops all borrowing","No. The video does not say this."]]}
+],
+four:[
+ {id:"f1",l:"Basic",q:"Which list gives the four ways to reduce debt burdens?",a:0,o:[
+  ["Cut spending, reduce debt, redistribute wealth, print money","Correct."],
+  ["Cut spending, raise interest rates, raise taxes, print money","Close, but no. Raising rates is not one of the four."],
+  ["Cut spending, reduce debt, raise interest rates, sell gold","No. Rates and gold are not in the list."],
+  ["Reduce debt, redistribute wealth, lower interest rates, print money","Close, but no. Rates are already near 0%. Cutting spending is the missing way."]]},
+ {id:"f2",l:"Deep",q:"Which of the four ways is inflationary and stimulative?",a:0,o:[
+  ["Printing money","Correct. The other three are deflationary."],
+  ["Cutting spending, because debt falls","No. Cutting spending is deflationary and painful."],
+  ["Debt restructuring, because borrowers owe less","No. Incomes and asset values fall. It is deflationary."],
+  ["Wealth redistribution, because taxes rise","No. The video says only printing money is inflationary and stimulative."]]},
+ {id:"f3",l:"Interplay",q:"Borrowers cut spending to repay debt. Why does the debt burden rise?",a:0,o:[
+  ["The cuts lower other people's incomes. Incomes fall faster than debts are repaid.","Correct."],
+  ["Lenders charge penalties when borrowers repay early","No. The video does not say this."],
+  ["Interest rates rise when spending falls","No. Rates are near 0%."],
+  ["Borrowers take new loans to cover the cuts","No. In this step, borrowers stop taking new debt."]]},
+ {id:"f4",l:"Basic",q:"What is debt restructuring?",a:0,o:[
+  ["Lenders accept less money, a longer time, or a lower interest rate","Correct. A little of something is better than all of nothing."],
+  ["Lenders receive more money over a shorter time","No. Restructuring reduces the debt."],
+  ["The central bank repays the lenders","No. Restructuring changes the contract between lender and borrower."],
+  ["Borrowers sell assets to repay all lenders in full","No. That is a forced sale, not restructuring."]]},
+ {id:"f5",l:"Interplay",q:"Why must the central bank and the central government cooperate?",a:0,o:[
+  ["The central bank can print money but can buy only financial assets. The government can buy goods and services but cannot print money.","Correct."],
+  ["The central bank can buy goods and services but cannot print money. The government can print money but can buy only financial assets.","No. This swaps the two."],
+  ["The central bank can print money and buy goods and services. The government only collects taxes.","No. The central bank cannot buy goods and services. That is why it needs the government."],
+  ["The government can print money but needs the central bank to set rates","No. Only the central bank can print money."]]},
+ {id:"f6",l:"Interplay",q:"The central bank buys government bonds, and the government spends the money on stimulus. What happens to debt?",a:0,o:[
+  ["Government debt rises, but the economy's total debt burden falls","Correct. Incomes rise, so the total burden falls."],
+  ["Government debt falls, and the total debt burden falls","No. The government borrows more, so its debt rises."],
+  ["Government debt rises, and the total debt burden rises","Close, but no. Incomes rise, so the total burden falls."],
+  ["Government debt stays the same, because the central bank printed the money","No. Buying bonds is lending. The government owes the money."]]},
+ {id:"f7",l:"Deep",q:"The central bank prints money and buys financial assets. Who does this help directly?",a:0,o:[
+  ["People who own financial assets","Correct. Asset prices rise, which makes these owners more creditworthy."],
+  ["Everyone equally, because prices rise","No. Only asset owners gain directly."],
+  ["The unemployed","No. The unemployed get help through government spending, not asset purchases."],
+  ["Only the government","No. That is the bond purchase. Asset purchases help asset owners."]]},
+ {id:"f8",l:"Interplay",q:"Why does wealth redistribution happen in a deleveraging?",a:0,o:[
+  ["Tax income falls and spending on the unemployed rises. Deficits grow. The government taxes the wealthy, who hold most of the wealth.","Correct."],
+  ["The central bank moves money from rich to poor","No. The central bank cannot tax. The government does this."],
+  ["The wealthy give money because of social tension","No. Tension is a result, not the cause."],
+  ["Lenders cancel the debts of poor borrowers","No. That is debt reduction, a different way."]]}
+],
+beauty:[
+ {id:"b1",l:"Basic",q:"Which three signs show a beautiful deleveraging?",a:0,o:[
+  ["Debts fall compared with income. Real growth is positive. Inflation is not a problem.","Correct."],
+  ["Debts fall in dollars. Real growth is positive. Inflation is zero.","Close, but no. The test is debt compared with income, not dollars. And inflation must not be a problem. It need not be zero."],
+  ["Debts fall compared with income. Growth is negative but short. Inflation is low.","No. Real growth must be positive."],
+  ["Debts fall compared with income. Real growth is positive. Interest rates rise.","No. Interest rates are not one of the signs."]]},
+ {id:"b2",l:"Deep",q:"Does printing money cause inflation in a deleveraging?",a:0,o:[
+  ["Not if it replaces credit that disappeared. Spending sets prices, and a dollar of money spends like a dollar of credit.","Correct."],
+  ["Yes, always, because more money always raises prices","No. If credit falls by the same amount, total spending does not change."],
+  ["No, never, because the central bank controls it","No. Too much printing causes high inflation, as in Germany in the 1920s."],
+  ["Only if the money buys government bonds","No. The test is the amount compared with the lost credit, not the type of asset."]]},
+ {id:"b3",l:"Scenario",q:"Debt is 100% of income. The interest rate on the debt is 2%. Income grows 1% a year. What happens to the debt burden?",a:0,o:[
+  ["It rises. Debt grows faster than income.","Correct. This is Dalio's example. Try it in the calculator above."],
+  ["It falls, because income still grows","Close, but no. Income grows, but debt grows faster."],
+  ["It stays the same","No. 2% and 1% are not equal."],
+  ["It falls, because the interest rate is low","No. The rate is low, but income growth is lower still."]]},
+ {id:"b4",l:"Scenario",q:"Same case, but the central bank prints enough to make income grow 3% a year. The interest rate stays at 2%. What happens?",a:1,o:[
+  ["The burden still rises, because the interest rate is above 0%","No. The test is income growth against the rate, not the rate against 0%."],
+  ["The burden falls, because income grows faster than the interest on the debt","Correct."],
+  ["The burden falls, but only if inflation is zero","No. The video sets no such condition. Inflation must only not be a problem."],
+  ["The burden stays the same until the government cuts spending","No. Income growth above the rate is enough to bring the burden down."]]},
+ {id:"b5",l:"Basic",q:"Which example does the video give of printing too much money?",a:0,o:[
+  ["Germany in the 1920s","Correct."],
+  ["Japan in 1989","No. That was a long-term debt peak."],
+  ["The United States in 1929","No. That was a long-term debt peak."],
+  ["The United States in 2008","No. The US printed over $2 trillion then, but the video does not call it too much."]]},
+ {id:"b6",l:"Interplay",q:"Which order shows the recovery into reflation?",a:0,o:[
+  ["Incomes rise → borrowers look creditworthy → lenders lend again → spending rises → growth returns","Correct."],
+  ["Lenders lend again → incomes rise → borrowers look creditworthy → growth returns","No. Lenders lend after borrowers look creditworthy."],
+  ["Interest rates rise → savers spend → growth returns","No. The video does not describe this path."],
+  ["Growth returns → incomes rise → lenders lend again","No. Growth comes at the end, not the start."]]},
+ {id:"b7",l:"Basic",q:"How long does a deleveraging usually take?",a:0,o:[
+  ["About a decade or more. People call it a “lost decade”.","Correct."],
+  ["About 1 to 2 years","No. It is much longer."],
+  ["About 5 to 8 years, like a short-term cycle","Close, but no. The video says a decade or more."],
+  ["About 75 to 100 years","No. That is the length of the full long-term cycle."]]}
+],
+rules:[
+ {id:"r1",l:"Interplay",q:"Which statement matches each rule to its reason?",a:0,o:[
+  ["Rule 1 (debt vs income) protects you from crushing debt burdens. Rule 2 (income vs productivity) protects you from becoming uncompetitive.","Correct."],
+  ["Rule 1 protects you from becoming uncompetitive. Rule 2 protects you from crushing debt burdens.","No. This swaps the reasons."],
+  ["Rule 1 protects you from inflation. Rule 2 protects you from crushing debt burdens.","No. Inflation is not the reason the video gives."],
+  ["Both rules protect you from inflation","No. The video gives debt burdens and competitiveness as the reasons."]]},
+ {id:"r2",l:"Basic",q:"Which rule matters most in the long run?",a:2,o:[
+  ["Do not let debt rise faster than income","No. This is important, but it is not the long-run driver."],
+  ["Do not let income rise faster than productivity","No. This is important, but it is not the long-run driver."],
+  ["Do all you can to raise productivity","Correct."],
+  ["Keep interest rates low","No. This is not one of the three rules."]]},
+ {id:"r3",l:"Scenario",q:"In a country, wages rise 6% a year, productivity rises 2% a year, and debt rises 4% a year. Which rule does it break?",a:1,o:[
+  ["Only rule 1","No. Debt grows 4% and income grows 6%. Debt grows slower, so rule 1 holds."],
+  ["Only rule 2","Correct. Income (6%) grows faster than productivity (2%). Debt (4%) grows slower than income, so rule 1 holds."],
+  ["Both rules","Close, but no. Check rule 1: debt at 4% is below income at 6%."],
+  ["Neither rule","No. Income at 6% grows faster than productivity at 2%."]]}
+],
+final:[
+ {id:"x1",l:"Interplay",q:"In a recession, the central bank cuts rates. In a deleveraging, it prints money. Why does it change its tool?",a:0,o:[
+  ["Rates are near 0%, so it cannot cut them more. Printing is the tool that remains.","Correct."],
+  ["Rate cuts cause inflation in a deleveraging","No. Prices fall in a deleveraging."],
+  ["The government forbids rate cuts in a deleveraging","No. The video does not say this."],
+  ["Printing money costs less than cutting rates","No. Cost is not the reason the video gives."]]},
+ {id:"x2",l:"Interplay",q:"Which statement matches each force to what it does?",a:0,o:[
+  ["Productivity: the long-run trend. Short-term cycle: swings the central bank steers. Long-term cycle: debt burdens built over decades.","Correct."],
+  ["Productivity: the long-run trend. Short-term cycle: debt burdens built over decades. Long-term cycle: swings the central bank steers.","Close, but no. This swaps the two debt cycles."],
+  ["Productivity: swings the central bank steers. Short-term cycle: the long-run trend. Long-term cycle: debt burdens built over decades.","No. Productivity is the trend, not the swing."],
+  ["Productivity: debt burdens built over decades. Short-term cycle: the trend. Long-term cycle: swings.","No. All three are mixed up."]]},
+ {id:"x3",l:"Scenario",q:"Spending falls. The interest rate is 0.25%. Debt to income is at a record high. The stock market crashed and banks are failing. Which phase is this?",a:1,o:[
+  ["A recession in the short-term cycle","Close, but no. Rates are near 0% and debt burdens are at a record. A rate cut cannot help."],
+  ["A deleveraging","Correct. Every sign points to it."],
+  ["The late expansion of a short-term cycle","No. In an expansion, spending rises."],
+  ["Reflation","No. In reflation, incomes and lending grow again."]]},
+ {id:"x4",l:"Scenario",q:"Interest rates are 5%. Prices rise fast. The central bank raises rates. Which phase is this?",a:0,o:[
+  ["The late expansion of a short-term cycle","Correct. Inflation, then the central bank raises rates."],
+  ["A deleveraging","No. In a deleveraging, prices fall and rates are near 0%."],
+  ["A recession","No. Prices rise here. In a recession, prices fall."],
+  ["Reflation after a deleveraging","No. Reflation follows a deleveraging, when rates are near 0%. Here the central bank uses its normal tool."]]},
+ {id:"x5",l:"Interplay",q:"Who does what in a beautiful deleveraging?",a:0,o:[
+  ["Central bank prints and buys bonds. Government spends on stimulus and benefits. Lenders restructure debts. The wealthy pay higher taxes.","Correct."],
+  ["Central bank spends on stimulus. Government prints money. Lenders restructure debts. The wealthy pay higher taxes.","Close, but no. This swaps the central bank and the government."],
+  ["Central bank prints and buys bonds. Government cuts all spending. Lenders lend more. The wealthy pay lower taxes.","No. Government spending rises and the wealthy pay more."],
+  ["Central bank raises rates. Government spends. Lenders restructure debts. The wealthy pay higher taxes.","No. In a deleveraging, the central bank prints money. It does not raise rates."]]},
+ {id:"x6",l:"Deep",q:"A country uses only austerity and defaults. It does not print money. Why does the deleveraging become ugly?",a:0,o:[
+  ["Both ways are deflationary. Incomes fall faster than debts, so the burden grows.","Correct. Nothing balances the deflationary pressure."],
+  ["Both ways are inflationary, so prices rise too fast","No. Both are deflationary."],
+  ["Defaults always cause wars","No. The video does not say this."],
+  ["Austerity raises interest rates","No. Rates are near 0%."]]},
+ {id:"x7",l:"Deep",q:"Which effect does NOT come from “one person's spending is another person's income”?",a:0,o:[
+  ["A borrower's default hurts the bank","Correct. This comes from a different link: a borrower's debt is a lender's asset."],
+  ["Spending cuts raise the debt burden","No. This depends on it. Cuts lower other people's incomes."],
+  ["Borrowing spreads growth from person to person","No. This depends on it. Your spending becomes the next person's income."],
+  ["A rate rise slows spending and then lowers incomes","No. This depends on it. Less spending means less income for sellers."]]},
+ {id:"x8",l:"Interplay",q:"Interest rates in the US hit 0% in the 1930s and again in 2008. What do the two periods have in common?",a:0,o:[
+  ["Both were deleveragings after long-term debt peaks","Correct."],
+  ["Both were normal recessions in the short-term cycle","No. In a normal recession, rates have room to fall."],
+  ["Both had high inflation","No. Prices fall in a deleveraging."],
+  ["In both, the government forbade lending","No. The video does not say this."]]}
+]};
+
+/* ---------- quiz engine ---------- */
+const KEY="econ-machine-quiz-v1";
+let ANS={}; try{ ANS=JSON.parse(localStorage.getItem(KEY)||"{}")||{}; }catch(_){ ANS={}; }
+const save=()=>{ try{ localStorage.setItem(KEY,JSON.stringify(ANS)); }catch(_){} };
+function hash(s){ let h=2166136261; for(const ch of s){ h^=ch.charCodeAt(0); h=Math.imul(h,16777619); } return h>>>0; }
+function order(q){ return q.o.map((_,i)=>i).sort((a,b)=>hash(q.id+a)-hash(q.id+b)); }
+
+function paintQ(q, box){
+  const chosen=ANS[q.id]; if(chosen===undefined) return;
+  box.querySelectorAll(".opt").forEach(btn=>{ const i=+btn.dataset.i; btn.disabled=true;
+    if(i===q.a) btn.classList.add("ok"); else if(i===chosen) btn.classList.add("bad");
+    if(!btn.querySelector(".why")){ const w=document.createElement("span"); w.className="why"; w.textContent=q.o[i][1]; btn.appendChild(w); } });
+  let v=box.querySelector(".verdict"); if(!v){ v=document.createElement("div"); v.className="verdict"; v.setAttribute("role","status"); box.appendChild(v); }
+  const ok=chosen===q.a; v.className="verdict "+(ok?"ok":"bad");
+  v.textContent= ok ? "Correct." : "Not correct. The green answer is correct. Read why each option is right or wrong.";
+}
+function renderQuiz(host){
+  const sid=host.dataset.s, qs=QUIZ[sid]; if(!qs) return;
+  host.innerHTML=`<h3>Check your understanding</h3><div style="font-size:14px;color:var(--muted)">Pick one answer. You see at once why each option is right or wrong.</div><div class="qs"></div><div class="qfoot"><span class="score" aria-live="polite"></span><button type="button" class="btn">Try this section again</button></div>`;
+  const list=host.querySelector(".qs");
+  qs.forEach((q,n)=>{
+    const box=document.createElement("div"); box.className="q";
+    box.innerHTML=`<div class="meta"><span class="lvl ${q.l}">${q.l}</span><span>Question ${n+1} of ${qs.length}</span></div><p class="stem"></p><ul class="opts"></ul>`;
+    box.querySelector(".stem").textContent=q.q;
+    const ul=box.querySelector(".opts");
+    order(q).forEach(i=>{ const li=document.createElement("li"); const b=document.createElement("button"); b.type="button"; b.className="opt"; b.dataset.i=i;
+      const t=document.createElement("span"); t.textContent=q.o[i][0]; b.appendChild(t);
+      b.addEventListener("click",()=>{ if(ANS[q.id]!==undefined) return; ANS[q.id]=i; save(); paintQ(q,box); updateScores(); });
+      li.appendChild(b); ul.appendChild(li); });
+    list.appendChild(box); paintQ(q,box);
+  });
+  host.querySelector(".qfoot .btn").addEventListener("click",()=>{ qs.forEach(q=>delete ANS[q.id]); save(); renderQuiz(host); updateScores(); });
+}
+function secScore(sid){ const qs=QUIZ[sid]||[]; let ans=0, ok=0; qs.forEach(q=>{ if(ANS[q.id]!==undefined){ ans++; if(ANS[q.id]===q.a) ok++; } }); return {ans,ok,n:qs.length}; }
+function updateScores(){
+  let A=0,O=0,N=0; const lv={Basic:[0,0,0],Deep:[0,0,0],Interplay:[0,0,0],Scenario:[0,0,0]};
+  Object.keys(QUIZ).forEach(sid=>{
+    const s=secScore(sid); A+=s.ans; O+=s.ok; N+=s.n;
+    const chip=document.querySelector(`[data-chip="${sid}"]`); if(chip){ chip.textContent=`${s.ok}/${s.n}`; chip.classList.toggle("done", s.ans===s.n); }
+    const host=document.querySelector(`.quiz[data-s="${sid}"] .score`); if(host) host.textContent = s.ans ? `Section score: ${s.ok} correct of ${s.ans} answered (${s.n} questions)` : `${s.n} questions`;
+    QUIZ[sid].forEach(q=>{ const L=lv[q.l]; L[2]++; if(ANS[q.id]!==undefined){ L[1]++; if(ANS[q.id]===q.a) L[0]++; } });
+  });
+  document.getElementById("tot").textContent=`${O} / ${N}`;
+  document.getElementById("totsub").textContent=`${A} answered`;
+  const sm=document.getElementById("summary"); sm.innerHTML="";
+  Object.entries(lv).forEach(([k,[ok,ans,n]])=>{ const d=document.createElement("div");
+    d.innerHTML=`<span class="lvl ${k}">${k}</span><b>${ok} / ${ans||0}</b><span style="font-size:13px;color:var(--muted)">correct of answered · ${n} total</span>`; sm.appendChild(d); });
+}
+// table of contents
+const toc=document.getElementById("toc");
+document.querySelectorAll("section.sec").forEach((s,i)=>{ const li=document.createElement("li"); const a=document.createElement("a"); a.href="#"+s.id;
+  const t=document.createElement("span"); t.textContent=(i<11?(i+1)+". ":"")+s.dataset.title; a.appendChild(t);
+  const c=document.createElement("span"); c.className="chip"; c.dataset.chip=s.querySelector(".quiz")?.dataset.s||""; a.appendChild(c);
+  li.appendChild(a); toc.appendChild(li); });
+document.querySelectorAll(".quiz").forEach(renderQuiz);
+document.getElementById("reset-all").addEventListener("click",()=>{ ANS={}; save(); document.querySelectorAll(".quiz").forEach(renderQuiz); updateScores(); toast("All answers cleared."); });
+updateScores();
+</script>
