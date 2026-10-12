@@ -1,0 +1,1 @@
+[["wait",1500],["until","/year (5[3-9])/.test(document.querySelector('[data-readout]').textContent)",20000],["eval","window.__driveSpeed=1"],["wait",2500],["shot","shots/delev.png"],["eval","window.__driveSpeed=40"],["until","/reflation/.test(document.querySelector('[data-readout]').textContent)",20000],["eval","window.__driveSpeed=1"],["shot","shots/reflate.png"]]

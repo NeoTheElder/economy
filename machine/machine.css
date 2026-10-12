@@ -1,0 +1,23 @@
+
+html, body { background: #0b0b0b; margin: 0; }
+@media (prefers-color-scheme: light) { html:not([data-theme="dark"]), html:not([data-theme="dark"]) body { background: #f2f2ef; } }
+html[data-theme="light"], html[data-theme="light"] body { background: #f2f2ef; }
+.em-page { background: var(--anatomy-page); color: var(--anatomy-text); font: 14px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; min-height: 100vh; padding-inline: 16px; padding-block: 40px 72px; box-sizing: border-box; }
+.em-page[data-theme="light"] { color-scheme: light; }
+.em-page[data-theme="dark"] { color-scheme: dark; }
+.em-page .iso-figure { width: min(880px, 100%); margin: 0 auto; }
+.em-stage { position: relative; touch-action: pan-y; outline: none; }
+.em-stage:focus-visible { outline: 1px solid var(--anatomy-muted); outline-offset: 6px; }
+.em-stage.em-grab { cursor: grab; }
+.em-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.em-hole { fill: var(--anatomy-shade-0); stroke: var(--anatomy-lo); stroke-width: var(--anatomy-weight); }
+.em-cord { stroke: var(--anatomy-hi); stroke-linecap: butt; fill: none; }
+.em-cord-core { stroke: var(--anatomy-paper); stroke-linecap: butt; fill: none; }
+.em-controls { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 12px 16px 4px; }
+.em-controls button { font: 12px/1 var(--anatomy-mono); color: var(--anatomy-text); background: var(--anatomy-card); border: 1px solid var(--anatomy-faint); border-radius: 999px; padding: 8px 12px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+.em-controls button b { font-weight: 600; color: var(--anatomy-muted); }
+.em-controls button:hover { border-color: var(--anatomy-mid); }
+.em-controls button:focus-visible { outline: 1px solid var(--anatomy-muted); outline-offset: 3px; }
+.em-controls button[aria-pressed="true"] { color: var(--anatomy-strong); border-color: var(--anatomy-hi); }
+.em-stats { display: flex; flex-wrap: wrap; gap: 4px 16px; justify-content: center; padding: 4px 16px 14px; font: 11.5px/1.4 var(--anatomy-mono); color: var(--anatomy-muted); font-variant-numeric: tabular-nums; }
+@media (max-width: 520px) { .em-page .iso-plate { overflow: hidden; } .em-stage svg { width: 118%; margin: -2% -9% -4%; } }
